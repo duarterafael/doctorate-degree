@@ -1,0 +1,49 @@
+Artigo encontrados na v1 e na v2
+23.	Wang, W.: The Effect of Rule Linking on Business Process Model Understanding. In: Integrating Business Process Models and Rules. Springer, Cham. p. 4259 (2019).
+The effect of rule linking on business process model understanding	Wang, Wei	2019		31
+24.	AbbadAndaloussi, A.; Slaats, T.; Burattin, A.; Hildebrandt, T.: Evaluating the Understandability of Hybrid Process Model Representations Using Eye Tracking: First Insights. In: International Conference on Business Process Management, Springer, Cham, pp. 475481 (2019).
+Evaluating the Understandability of Hybrid Process Model Representations Using Eye Tracking: First Insights	Abbad Andaloussi, Amine and Slaats, Tijs and Burattin, Andrea and Hildebrandt, Thomas T. and Weber, Barbara	2019		5
+25.	Boutin, K.; Léger, P.; Davis, C.; Hevner, A.; LabontéLeMoyne, É.: Attentional Characteristics of Anomaly Detection.In: Conceptual Modeling. Information Systems and Neuroscience. Springer, Cham, pp. 5763 (2019).
+Attentional Characteristics of Anomaly Detection in Conceptual Modeling	Boutin, KarlDavid ; LÃ©ger, PierreMajorique ; Davis, Christopher J. ; Hevner, Alan R. ; LabontÃ©LeMoyne, Ã‰lise	2019		3
+26.	Zimoch, M.; Pryss, R.; Layher, G.; Neumann, H.; Probst, T.; Schlee, W.; Reichert, M.: Utilizing the Capabilities Offered by EyeTracking to Foster Novices’ Comprehension of Business Process Models. In: ICCC  International Conference on Cognitive Computing. Lecture Notes in Computer Science, vol. 10971, pp. 155163, Springer, Cham (2018).
+Utilizing the Capabilities Offered by EyeTracking to Foster Novices Comprehension of Business Process Models	Zimoch, Michael and Pryss, Rudiger and Layher, Georg and Neumann, Heiko and Probst, Thomas and Schlee, Winfried and Reichert, Manfred	2018		43
+27.	Vermeulen, S.: RealTime Business Process Model Tailoring: The Effect of Domain Knowledge on Reading Strategy. In: Debruyne C. et al. (eds) On the Move to Meaningful Internet Systems. OTM 2017 Workshops, vol: 10697, pp. 280286, Springer (2018).
+Realtime business process model tailoring: The effect of domain knowledge on reading strategy	Vermeulen, Sven	2018		31
+28.	Zimoch, M.; Mohring, T.; Pryss, R.; Probst, T.; Schlee, W.; Reichert, M.: Using Insights from Cognitive Neuroscience to Investigate the Effects of EventDriven Process Chains on Process Model Comprehension. In: Business Process Management Workshops. Vol: 308, pp. 446459, Springer, Cham (2018).
+Using Insights from Cognitive Neuroscience to Investigate the Effects ofEventDriven Process Chains on Process Model Comprehension	Zimoch, Michael and Mohring, Tim and Pryss, Ruediger and Probst, Thomasand Schlee, Winfried and Reichert, Manfred	2018		45
+29.	Pavlicek, J.; Hronza, R.; Pavlickova, P.; Jelinkova, K.: The Business Process Model Quality Metrics. In: Enterprise andOrganizationalModelingandSimulation. pp. 134148 (2017).
+The Business Process Model Quality Metrics	Pavlicek, Josef ; Hronza, Radek ; Pavlickova, Petra ; Jelinkova, Klara	2017		28
+30.	Weber, B.; Neurauter, M.; Burattin, A.; Pinggera, J.; Davis, C.: Measuring and Explaining Cognitive Load During Design Activities: A FineGrained Approach. In: Information Systems and Neuroscience. Lecture Notes in Information Systems and Organisation 2017, vol 25, pp. 4753. Springer, Cham (2018).
+Measuring and explaining cognitive load during design activities: A finegrained approach	Weber, B. and Neurauter, M. and Burattin, A. and Pinggera, J. and Davis, C.	2017		6
+31.	Petrusel, R.; Mendling, J.; Reijers, H. A.: How visual cognition influences process model comprehension. DecisionSupport Systems, vol 96, pp. 116. Elsevier (2017).
+How visual cognition influences process model comprehension	Razvan Petrusel and Jan Mendling and Hajo A. Reijers	2017		27
+32.	Burattin, A.; Kaiser, M.; Neurauter, M.; Weber, B.: Eye Tracking Meets the Process of Process Modeling: A Visual Analytic Approach. In: Dumas M., Fantinato M. (eds) Business Process Management Workshops 2016. BPM. vol 281, pp. 461473. Springer, Cham (2017).
+Eye tracking meets the process of process modeling: A visual analytic approach	Burattin, Andrea and Kaiser, Michael and Neurauter, Manuel and Weber, Barbara	2017		11
+33.	Zimoch, M.; Pryss, R.; Schobel, J.; Reichert, M.: Eye Tracking Experiments on Process Model Comprehension: Lessons Learned. In: ReinhartzBerger I., Gulden J., Nurcan S., Guédria W., Bera P. (eds) Enterprise, BusinessProcess and Information Systems Modeling. BPMDS 2017, EMMSAD. vol 287, pp. 153168. Springer, Cham (2017).
+Eye tracking experiments on process model comprehension: Lessons learned	Zimoch, Michael and Pryss, Rudiger and Schobel, Johannes and Reichert, Manfred	2017		32
+34.	Zimoch, M.; Pryss, R.; Probst, T.; Schlee, W.; Reichert, M.: Cognitive Insights into Business Process Model Comprehension: Preliminary Results for Experienced and Inexperienced Individuals. In: ReinhartzBerger I., Gulden J., Nurcan S., Guédria W., Bera P. (eds) BPMDS 2017, vol 287, pp. 137152. Springer, Cham (2017).
+Cognitive insights into business process model comprehension: Preliminary results for experienced and inexperienced individuals	Zimoch, Michael and Pryss, Rudiger and Probst, Thomas and Schlee, Winfried and Reichert, Manfred	2017		43
+35.	Petrusel, R.; Mendling, J.; Reijers, H. A.: Taskspecific visual cues for improving process model understanding. Informationand Software Technology, 79, pp. 6378 (2016).
+Taskspecific visual cues for improving process model understanding	Razvan Petrusel and Jan Mendling and Hajo A. Reijers	2016		25
+36.	Weber, B.; Neurauter, M.; Pinggera, J.; Zugal, S.; Furtner, M.; Martini, M.; Sachse, P.: Measuring cognitive load during process model creation. In: Information Systems andNeuroscience, pp. 129136. Springer, Cham (2015).
+Measuring cognitive load during process model creation	Weber, B. and Neurauter, M. and Pinggera, J. and Zugal, S. and Furtner, M. and Martini, M. and Sachse, P.	2015		23
+37.	Petrusel, R.; Mendling, J.: Eyetracking the factors of process model comprehension tasks. In: International Conference on Advanced Information Systems Engineering, pp. 224239. Springer, Berlin, Heidelberg (2013).
+Eyetracking the factors of process model comprehension tasks	Petrusel, Razvan and Mendling, Jan	2013		14
+38.	Pinggera, J.; Furtner, M.; Martini, M.; Sachse, P.; Reiter, K.; Zugal, S.; Weber, B.: Investigating the process of process modeling with eye movement analysis. In: International Conference on Business Process Management. pp. 438450. Springer, Berlin, (2012).
+Investigating the Process of Process Modeling with Eye Movement Analysis	Pinggera, Jakob ; Furtner, Marco ; Martini, Markus ; Sachse, Pierre ; Reiter, Katharina ; Zugal, Stefan ; Weber, Barbara	2013		23
+39.	Molina, A. I.; Redondo, M. A.; Ortega, M.; Lacave, C.: Evaluating a graphical notation for modeling collaborative learning activities: A family of experiments.In: Science of Computer Programming, v. 88, pp. 5481, (2014). 
+Evaluating a graphical notation for modeling collaborative learning activities: A family of experiments	Ana I. Molina and Miguel A. Redondo and Manuel Ortega and Carmen Lacave	2014		0
+40.	Burattin, A.; Kaiser, M.; Neurauter, M.; Weber, B.: Learning process modeling phases from modeling interactions and eye tracking data. In: Data & Knowledge Engineering, (2019).
+Learning process modeling phases from modeling interactions and eyetracking data	Burattin, Andrea and Kaiser, Michael and Neurauter, Manuel and Weber,Barbara	2019		13
+41.	Chen, T.; Wang, W.; Indulska, M.; Sadiq, S.: Business Process and Rule Integration ApproachesAn Empirical Analysis. In: International Conference on Business Process Management. Springer, Cham, pp. 3752 (2018).
+Business Process and Rule Integration Approaches  An Empirical Analysis	Chen, Tianwa ; Wang, Wei ; Indulska, Marta ; Sadiq, Shazia	2018		17
+
+Artigos encontrados apenas na v2
+Investigating the Process of Process Modeling: Towards an inDepth Understanding of How Process Models Are Created	Weber, Barbara	2014		10
+Comprehension of business process models comprehension of business process models: Insight into cognitive strategies via eye tracking	Miles Tallon and Michael Winter and RÃ¼diger Pryss and Katrin Rakoczy and Manfred Reichert and Mark W. Greenlee and Ulrich Frick	2019		29
+Understanding Process Models Using the EyeTracking: A Systematic Mapping	Brito, Vinicius and Duarte, Rafael and Lopes, Charlie Silva and da Silveira, Denis Silva	2019		14
+Exploring the Understandability of a Hybrid Process Design Artifact Based on DCR Graphs	Abbad Andaloussi, Amine and Burattin, Andrea and Slaats, Tijs and Petersen, Anette Chelina Moller and Hildebrandt, Thomas T. and Weber, Barbara	2019		9
+An Empirical Review of the Connection Between Model Viewer Characteristics and the Comprehension of Conceptual Process Models	Mendling, Jan ; Recker, Jan ; Reijers, Hajo A. ; Leopold, Henrik	2019		14
+Advanced Statistical Methods for Eye Movement Analysis and Modelling: AÂ Gentle Introduction	Boccignone, Giuseppe	2019	0
+USING EYE TRACKING TO EXPOSE COGNITIVE PROCESSES IN UNDERSTANDINGCONCEPTUAL MODELS	Bera, Palash and Soffer, Pnina and Parsons, Jeffrey	2019		11
+Comprehension of business process models: Insight into cognitivestrategies via eye tracking	Tallon, Miles and Winter, Michael and Pryss, Ruediger and Rakoczy,Katrin and Reichert, Manfred and Greenlee, Mark W. and Frick, Ulrich	2019		26
