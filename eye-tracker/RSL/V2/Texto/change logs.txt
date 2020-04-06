@@ -1,3 +1,4 @@
 V2_1 equivale a versão V20 da primeira versão que é a versão estendida após a revisão de evelyne
 V2_2 equivala a versão V23_S que é a versão final estendida do artigo enviado para o quatic
 V2_3 versão com os valores atualizados com a revisita da RSL
+V2_6 add o 3 artigos novo e atualização de referencias
