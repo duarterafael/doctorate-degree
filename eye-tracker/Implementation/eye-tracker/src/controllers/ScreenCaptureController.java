@@ -28,7 +28,7 @@ public class ScreenCaptureController {
 	private boolean recording;
 	private DataController gazeController;
 	private MovieController movieController;
-	private AudioController audioController;
+	//private AudioController audioController;
 	private ImageEditor imageEditor;
 
 	private CaptureLoop captureLoop;
@@ -47,7 +47,7 @@ public class ScreenCaptureController {
 
 		this.gazeController = gazeController;
 		this.movieController = movieController;
-		this.audioController = audioController;
+		//this.audioController = audioController;
 		this.imageEditor = new ImageEditor(gazeController);
 		this.paused = false;
 
@@ -101,11 +101,11 @@ public class ScreenCaptureController {
 
 				if (workingDirectory == null) {
 					movieController.startRecording(currentTime);
-					audioController.setFilename(currentTime);
+					//audioController.setFilename(currentTime);
 					gazeController.startRecording(currentTime);
 				} else {
 					movieController.startRecording(workingDirectory + "\\" + currentTime);
-					audioController.setFilename(workingDirectory + "\\" + currentTime);
+					//audioController.setFilename(workingDirectory + "\\" + currentTime);
 					gazeController.startRecording(workingDirectory + "\\" + currentTime);
 				}
 
@@ -122,14 +122,14 @@ public class ScreenCaptureController {
 		
 			captureLoop.start();
 
-			try {
-				recordThread.start();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-			//	e.printStackTrace();
-				
-				System.out.println("Problem with sound recording");
-			}
+//			try {
+//				recordThread.start();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//			//	e.printStackTrace();
+//				
+//				System.out.println("Problem with sound recording");
+//			}
 
 		}
 	}
@@ -154,8 +154,8 @@ public class ScreenCaptureController {
 				e.printStackTrace();
 			}
 
-			audioController.stop();
-			audioController.save();
+		//	audioController.stop();
+			//audioController.save();
 			
 			movieController.endRecording();			
 
@@ -178,16 +178,16 @@ public class ScreenCaptureController {
 		}
 	}
 	
-	Thread recordThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                audioController.start();
-            } catch (LineUnavailableException ex) {
-            	System.out.println("cant record audio");
-            }              
-        }
-    });
+//	Thread recordThread = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            try {
+//                audioController.start();
+//            } catch (LineUnavailableException ex) {
+//            	System.out.println("cant record audio");
+//            }              
+//        }
+//    });
 
 	
 	private String getCurrentTime() {
