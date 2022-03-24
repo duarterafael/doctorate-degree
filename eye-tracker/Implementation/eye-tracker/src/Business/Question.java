@@ -2,19 +2,27 @@ package Business;
 
 public class Question {
 	
+	private String statement;
+	private String altenatives;
 	private String paht;
 	private Character answer;
 	
-	public Question(String paht, Character answer) {
+	public Question(String statement, String altenatives, Character answer) {
 		super();
-		this.paht = paht;
+		this.statement = statement;
+		this.altenatives = altenatives;
 		this.answer = answer;
 	}
-	public String getPaht() {
-		return paht;
-	}
+	
 	public Character getAnswer() {
 		return answer;
 	}
+	public String getStatement() {
+		return statement;
+	}
+	public String getAltenatives() {
+		return altenatives;
+	}
+	
 	
 }

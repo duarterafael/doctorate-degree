@@ -2,6 +2,8 @@ package controllers;
 
 import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -15,6 +17,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 import javax.sound.sampled.LineUnavailableException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -24,7 +27,7 @@ import views.TopMenu;
 
 public class ScreenCaptureController {
 
-	private MainFrame mainFrame;
+	private static MainFrame mainFrame;
 	private boolean recording;
 	private DataController gazeController;
 	private MovieController movieController;
@@ -255,6 +258,25 @@ public class ScreenCaptureController {
 		MovieController mc = new MovieController();
 		AudioController ac = new AudioController();
 		ScreenCaptureController scc = new ScreenCaptureController(gc, mc, ac);
+		try {
+			showOnScreen(1, mainFrame);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void showOnScreen( int screen, JFrame frame ) {
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] gs = ge.getScreenDevices();
+		
+		if(screen > -1 && screen < gs.length) {
+		    gs[screen].setFullScreenWindow(frame);
+		}else if(gs.length > 0) {
+		    gs[0].setFullScreenWindow(frame);
+		}else {
+		    throw new RuntimeException("No Screens Found");
+		}
 	}
 
 }

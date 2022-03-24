@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
@@ -13,11 +15,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import Business.Experiment;
 import Business.ModelType;
@@ -43,17 +48,20 @@ public class ExperimentScreen {
 	};
 
 	private static final long serialVersionUID = 1L;
-	private static JFrame frame;
+	public static JFrame frame;
 	private static final String DEFUALT_MODEL_TYPE = "Select a model type";
 	private Experiment experiment;
 	private JPanel firstPanel;
 	private JPanel secondPanel;
-	private int imageIndex = 0;
+	private int questionsIndex = 0;
+	private JLabel statementLabel;
+	private JLabel altenativesLabel;
 	private JLabel imageLabel;
-	private JLabel responseList;
+	private Font defaultFont;
 
 	public ExperimentScreen() {
 		frame = new JFrame();
+		frame.setBackground(Color.WHITE);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
@@ -62,9 +70,9 @@ public class ExperimentScreen {
 		frame.add(firstPanel());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setUndecorated(true);
-
 		frame.setVisible(true);
-
+		frame.setBackground(Color.WHITE);
+		defaultFont = new Font("Arial", Font.CENTER_BASELINE, 25);
 	}
 
 	private JPanel firstPanel() {
@@ -86,7 +94,7 @@ public class ExperimentScreen {
 		JComboBox comboBoxmodelTypes = new JComboBox(modelTypes);
 		comboBoxmodelTypes.setFont(font1);
 
-		comboBoxmodelTypes.setSelectedIndex(1); // REMOVER THIS
+		comboBoxmodelTypes.setSelectedIndex(2); // REMOVER THIS
 		textParticipantId.setText("Rafael Duarte");// REMOVE THIS
 
 		JButton buttonLogin = new JButton("Start");
@@ -143,8 +151,49 @@ public class ExperimentScreen {
 	}
 
 	public void secondPanel() {
-		secondPanel = new JPanel(new BorderLayout());
-		setImage(imageIndex);
+
+		secondPanel = new JPanel();
+//		secondPanel.setLayout(new BoxLayout(secondPanel, BoxLayout.Y_AXIS));
+//		secondPanel.setBackground(Color.BLUE);
+//		secondPanel.setOpaque(true);
+//		
+//		statementLabel = new JLabel("statement");
+//		statementLabel.setFont(defaultFont);
+//		statementLabel.setOpaque(true);
+//		statementLabel.setBackground(Color.red);
+//		statementLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+//		secondPanel.add(statementLabel);
+//		
+//		JPanel panel = new JPanel();
+//		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		
+		try {
+//			String path = "/resources/" + experiment.getModelType() + ".png";
+			String path = "/resources/Sem título.png";
+			ImageIcon image = new ImageIcon(ImageIO.read(getClass().getResource(path)));
+			imageLabel = new JLabel(image);
+		} catch (IOException e1) {
+
+			JOptionPane.showMessageDialog(frame, "Erro to select model.\r\n" + e1.getMessage(), "Erro!",
+					JOptionPane.ERROR_MESSAGE);
+
+			e1.printStackTrace();
+		}
+
+//		imageLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+//		panel.add(imageLabel);
+//		
+//		altenativesLabel = new JLabel("altenatives");
+//		altenativesLabel.setFont(defaultFont);
+//		altenativesLabel.setOpaque(true);
+//		altenativesLabel.setBackground(Color.green);
+//		altenativesLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//		panel.add(altenativesLabel);
+
+		
+		secondPanel.add(imageLabel);
+
+		//setQuestions(questionsIndex);
 
 		KeyListener listener = new KeyListener() {
 			@Override
@@ -156,30 +205,25 @@ public class ExperimentScreen {
 				String response = KeyEvent.getKeyText(e.getKeyCode()).toUpperCase();
 
 				if (validResponses.contains(response)) {
-					if (imageIndex < experiment.getQuestions().size()) {
+					if (questionsIndex < experiment.getQuestions().size()) {
 						System.out.println("keyPressed=" + response);
 
 						experiment.getResponses().add(response.charAt(0));
 
-						imageIndex++;
-						responseList.setText(experiment.toStringResponses());
+						questionsIndex++;
 
-						if(imageIndex < experiment.getQuestions().size())
-						{
-							setImage(imageIndex);
-						}else
-						{
+						if (questionsIndex < experiment.getQuestions().size()) {
+							setQuestions(questionsIndex);
+						} else {
 							int score = experiment.getScore();
 							JOptionPane.showMessageDialog(frame,
-									"End of experiment.\r\n"
-									+"your escore is "+score+".\r\n"
-									+ "Thank you so much for contributing to our experiment!",
+									"End of experiment.\r\n" + "your escore is " + score + ".\r\n"
+											+ "Thank you so much for contributing to our experiment!",
 									"End experiment message", JOptionPane.WARNING_MESSAGE);
-						
-						}
-						
 
-					} 
+						}
+
+					}
 				}
 			}
 
@@ -191,41 +235,15 @@ public class ExperimentScreen {
 
 		secondPanel.addKeyListener(listener);
 		secondPanel.setFocusable(true);
-		setStatusPanel();
+
 		frame.add(secondPanel);
 	}
 
-	private void setStatusPanel() {
-		JPanel statusPanel = new JPanel(new FlowLayout());
-		statusPanel.add(new JLabel("Participant ID: " + experiment.getParticipant().getID()));
-		statusPanel.add(new JLabel("Model type: " + experiment.getModelType().toString()));
-		responseList = new JLabel("Answers: " + experiment.toStringResponses());
-		statusPanel.add(responseList);
-
-		secondPanel.add(statusPanel, BorderLayout.SOUTH);
-
-	}
-
-	private void setImage(int index) {
-		ImageIcon image = null;
-		try {
-			image = new ImageIcon(ImageIO.read(getClass().getResource(experiment.getQuestions().get(index).getPaht())));
-			if (index == 0) {
-				imageLabel = new JLabel();
-			}
-			imageLabel.setIcon(image);
-			secondPanel.add(imageLabel, BorderLayout.CENTER);
-		} catch (IOException e) {
-			try {
-				image = new ImageIcon(ImageIO.read(getClass().getResource("/resources/image-not-found.png")));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-			e.printStackTrace();
-		}
-
+	private void setQuestions(int index) {
+		Question currentQuetion = experiment.getQuestions().get(index);
+		statementLabel.setText(currentQuetion.getStatement());
+		String alternativas = "<html>" + currentQuetion.getAltenatives().replace("\r\n", "<br/>") + "</html>";
+		altenativesLabel.setText(alternativas);
 	}
 
 }
