@@ -35,6 +35,9 @@ import javax.swing.SwingConstants;
 import Business.Experiment;
 import Business.ModelType;
 import Business.Question;
+import Business.ScreenCaptureManager;
+import controllers.DataController;
+import controllers.MovieController;
 
 public class ExperimentScreen {
 
@@ -47,12 +50,13 @@ public class ExperimentScreen {
 	private JPanel firstPanel;
 	private JPanel secondPanel;
 	private int questionsIndex = 0;
-	private JLabel statementLabel;
-	private JLabel altenativesLabel;
 	private JLabel imageLabel;
-	private Font defaultFont;
+	private ScreenCaptureManager screenCaptureManager;
 
 	public ExperimentScreen() {
+		DataController gc = new DataController();
+		MovieController mc = new MovieController();
+		screenCaptureManager = new ScreenCaptureManager(gc, mc);
 		frame = new JFrame();
 		frame.setBackground(Color.WHITE);
 
@@ -65,7 +69,6 @@ public class ExperimentScreen {
 		frame.setUndecorated(true);
 		frame.setVisible(true);
 		frame.setBackground(Color.WHITE);
-		defaultFont = new Font("Arial", Font.CENTER_BASELINE, 25);
 	}
 
 	private JPanel firstPanel() {
@@ -161,7 +164,9 @@ public class ExperimentScreen {
 
 	public void secondPanel() {
 		secondPanel = new JPanel(new BorderLayout());
+		screenCaptureManager.startRecording();
 		setImage(questionsIndex);
+		
 
 		KeyListener listener = new KeyListener() {
 			@Override
@@ -186,13 +191,16 @@ public class ExperimentScreen {
 						questionsIndex++;
 
 						if (questionsIndex < experiment.getQuestions().size()) {
+							screenCaptureManager.endRecording();
+							screenCaptureManager.startRecording();
+							
 							setImage(questionsIndex);
 						} else {
-							int score = experiment.getScore();
+							
 							JOptionPane.showMessageDialog(frame,
 									"End of experiment.\r\n" + "Thank you so much for contributing to our experiment!",
 									"End experiment message", JOptionPane.WARNING_MESSAGE);
-
+							screenCaptureManager.endRecording();
 						}
 
 					}
@@ -205,11 +213,5 @@ public class ExperimentScreen {
 		frame.add(secondPanel);
 	}
 
-	private void setQuestions(int index) {
-		Question currentQuetion = experiment.getQuestions().get(index);
-		statementLabel.setText(currentQuetion.getStatement());
-		String alternativas = "<html>" + currentQuetion.getAltenatives().replace("\r\n", "<br/>") + "</html>";
-		altenativesLabel.setText(alternativas);
-	}
 
 }

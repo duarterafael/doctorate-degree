@@ -14,5 +14,10 @@ public class Participant {
 		return ID;
 	}
 	
+	@Override
+	public String toString() {
+		return getID();
+	}
+	
 	
 }
