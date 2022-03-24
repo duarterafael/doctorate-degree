@@ -25,4 +25,16 @@ public class Question {
 	}
 	
 	
+
+	public void setPaht(String paht) {
+		this.paht = paht;
+	}
+
+	public String getPaht() {
+		return paht;
+	}
+	
+	
+	
+	
 }

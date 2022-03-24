@@ -170,6 +170,12 @@ public class Experiment {
 		'C');
 		questions.add(question15);	
 		
+		for(int i = 0; i < Constants.qtyQuestions; i++)
+		{
+			String path = Constants.BASE_PATH+modelType+"/"+modelType+"_"+i+Constants.FILE_EXTENSION;
+			questions.get(i).setPaht(path);
+		}
+		
 	}
 	
 	public int getScore()

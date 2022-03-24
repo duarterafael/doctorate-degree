@@ -6,7 +6,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -44,6 +42,19 @@ public class ScreenCaptureController {
 	// fields used in capturing screen
 	private Robot robot;
 	private Rectangle screenRect;
+	
+	public static GraphicsDevice getOnScreen( int screen) {
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] gs = ge.getScreenDevices();
+		
+		if(screen > -1 && screen < gs.length) {
+		  return  gs[screen];
+		}else if(gs.length > 0) {
+		   return gs[0];
+		}else {
+		    throw new RuntimeException("No Screens Found");
+		}
+	}
 
 	public ScreenCaptureController(DataController gazeController, MovieController movieController,
 			AudioController audioController) {
@@ -53,8 +64,12 @@ public class ScreenCaptureController {
 		//this.audioController = audioController;
 		this.imageEditor = new ImageEditor(gazeController);
 		this.paused = false;
+		
+		GraphicsDevice gDev = getOnScreen(1);
+		Rectangle bounds = gDev.getDefaultConfiguration().getBounds();
 
-		this.screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+		this.screenRect = new Rectangle((int) bounds.getMinX(),
+                (int) bounds.getMinY(), (int) bounds.getWidth(), (int) bounds.getHeight());
 		try {
 			this.robot = new Robot();
 		} catch (AWTException e) {

@@ -38,14 +38,7 @@ import Business.Question;
 
 public class ExperimentScreen {
 
-	private static final List<String> validResponses = new LinkedList<String>() {
-		{
-			add("A");
-			add("B");
-			add("C");
-			add("D");
-		}
-	};
+	private static final List<String> validResponses=new LinkedList<String>(){{add("A");add("B");add("C");add("D");}};
 
 	private static final long serialVersionUID = 1L;
 	public static JFrame frame;
@@ -150,50 +143,25 @@ public class ExperimentScreen {
 
 	}
 
-	public void secondPanel() {
-
-		secondPanel = new JPanel();
-//		secondPanel.setLayout(new BoxLayout(secondPanel, BoxLayout.Y_AXIS));
-//		secondPanel.setBackground(Color.BLUE);
-//		secondPanel.setOpaque(true);
-//		
-//		statementLabel = new JLabel("statement");
-//		statementLabel.setFont(defaultFont);
-//		statementLabel.setOpaque(true);
-//		statementLabel.setBackground(Color.red);
-//		statementLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-//		secondPanel.add(statementLabel);
-//		
-//		JPanel panel = new JPanel();
-//		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		
+	private void setImage(int index) {
+		ImageIcon image = null;
 		try {
-//			String path = "/resources/" + experiment.getModelType() + ".png";
-			String path = "/resources/Sem título.png";
-			ImageIcon image = new ImageIcon(ImageIO.read(getClass().getResource(path)));
-			imageLabel = new JLabel(image);
-		} catch (IOException e1) {
-
-			JOptionPane.showMessageDialog(frame, "Erro to select model.\r\n" + e1.getMessage(), "Erro!",
-					JOptionPane.ERROR_MESSAGE);
-
-			e1.printStackTrace();
+			String path = experiment.getQuestions().get(index).getPaht();
+			image = new ImageIcon(ImageIO.read(getClass().getResource(path)));
+			if (index == 0) {
+				imageLabel = new JLabel();
+			}
+			imageLabel.setIcon(image);
+			secondPanel.add(imageLabel, BorderLayout.CENTER);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
 		}
+	}
 
-//		imageLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-//		panel.add(imageLabel);
-//		
-//		altenativesLabel = new JLabel("altenatives");
-//		altenativesLabel.setFont(defaultFont);
-//		altenativesLabel.setOpaque(true);
-//		altenativesLabel.setBackground(Color.green);
-//		altenativesLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-//		panel.add(altenativesLabel);
-
-		
-		secondPanel.add(imageLabel);
-
-		//setQuestions(questionsIndex);
+	public void secondPanel() {
+		secondPanel = new JPanel(new BorderLayout());
+		setImage(questionsIndex);
 
 		KeyListener listener = new KeyListener() {
 			@Override
@@ -202,23 +170,27 @@ public class ExperimentScreen {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
 				String response = KeyEvent.getKeyText(e.getKeyCode()).toUpperCase();
 
 				if (validResponses.contains(response)) {
 					if (questionsIndex < experiment.getQuestions().size()) {
-						System.out.println("keyPressed=" + response);
+						//System.out.println("keyPressed=" + response);
 
 						experiment.getResponses().add(response.charAt(0));
 
 						questionsIndex++;
 
 						if (questionsIndex < experiment.getQuestions().size()) {
-							setQuestions(questionsIndex);
+							setImage(questionsIndex);
 						} else {
 							int score = experiment.getScore();
 							JOptionPane.showMessageDialog(frame,
-									"End of experiment.\r\n" + "your escore is " + score + ".\r\n"
-											+ "Thank you so much for contributing to our experiment!",
+									"End of experiment.\r\n" + "Thank you so much for contributing to our experiment!",
 									"End experiment message", JOptionPane.WARNING_MESSAGE);
 
 						}
@@ -226,16 +198,10 @@ public class ExperimentScreen {
 					}
 				}
 			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
-			}
 		};
 
 		secondPanel.addKeyListener(listener);
 		secondPanel.setFocusable(true);
-
 		frame.add(secondPanel);
 	}
 
