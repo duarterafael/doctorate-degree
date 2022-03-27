@@ -17,10 +17,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
+import java.io.File; 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -56,6 +59,8 @@ public class ExperimentScreen {
 	private JLabel imageLabel;
 	private ScreenCaptureManager screenCaptureManager;
 	private ExprerimentCSVWritter exprerimentCSVWritter;
+	private File rootFile = null;
+	private String exemperimentDataTime = ScreenCaptureManager.getCurrentTime();
 
 	public ExperimentScreen() {
 		
@@ -95,11 +100,11 @@ public class ExperimentScreen {
 		JComboBox comboBoxmodelTypes = new JComboBox(modelTypes);
 		comboBoxmodelTypes.setFont(font1);
 
-		comboBoxmodelTypes.setSelectedIndex(2); // REMOVER THIS
+		comboBoxmodelTypes.setSelectedIndex(1); // REMOVER THIS
 		textParticipantId.setText("Rafael Duarte");// REMOVE THIS
 
 		JButton buttonLogin = new JButton("Start");
-
+		
 		buttonLogin.addActionListener(new ActionListener() {
 
 			@Override
@@ -111,6 +116,10 @@ public class ExperimentScreen {
 					JOptionPane.showMessageDialog(frame, "Please select a model type", "Error message",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
+					screenCaptureManager.workingDirectory = Constants.BASE_OUTPUT_PATH+textParticipantId.getText()+ "_" + comboBoxmodelTypes.getSelectedItem().toString()+"\\"+exemperimentDataTime;
+					rootFile = new File(screenCaptureManager.workingDirectory);
+					rootFile.mkdirs();
+					
 					experiment = new Experiment(
 							ModelType.getByDescription(comboBoxmodelTypes.getSelectedItem().toString()),
 							textParticipantId.getText());
@@ -167,9 +176,18 @@ public class ExperimentScreen {
 			e.printStackTrace();
 		}
 	}
+	
+	private void setCurrentOutputDir()
+	{
+		String subDir = rootFile.getName()+"_"+(questionsIndex+1)+"_"+ScreenCaptureManager.getCurrentTime();
+		File currentSubDir = new File(rootFile.getAbsolutePath()+"\\"+subDir);
+		currentSubDir.mkdirs();
+		screenCaptureManager.workingDirectory = currentSubDir.getAbsolutePath();
+	}
 
 	public void secondPanel() {
 		secondPanel = new JPanel(new BorderLayout());
+		setCurrentOutputDir();
 		screenCaptureManager.startRecording();
 		setImage(questionsIndex);
 		
@@ -195,9 +213,9 @@ public class ExperimentScreen {
 						experiment.getResponses().add(response.charAt(0));
 
 						questionsIndex++;
-
 						if (questionsIndex < experiment.getQuestions().size()) {
 							screenCaptureManager.endRecording();
+							setCurrentOutputDir();
 							screenCaptureManager.startRecording();
 							
 							setImage(questionsIndex);
@@ -222,10 +240,17 @@ public class ExperimentScreen {
 	private void storeExperimentData()
 	{
 		List<String> headers = new LinkedList<String>();
+		headers.add("Time stamp");
 		headers.add("Participant Id");
 		headers.add("Model Tyle");
 		headers.add("Score");
+		
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+		Date date = new Date();
+
 		List<String> data = new LinkedList<String>();
+		data.add(dateFormat.format(date));
 		data.add(experiment.getParticipant().getID());
 		data.add(experiment.getModelType().getdescription());
 		data.add(experiment.getScore()+"");
@@ -234,9 +259,14 @@ public class ExperimentScreen {
 			headers.add("Q"+(i+1));
 			data.add(experiment.getResponses().get(i).toString());
 		}
+		
+		headers.add("Output data");
+		data.add(rootFile.getAbsolutePath());
+		
 		List<List<String>> dataList = Arrays.asList(data);
-		exprerimentCSVWritter = new ExprerimentCSVWritter(headers, dataList, screenCaptureManager.workingDirectory, "Experimento.csv");
-		exprerimentCSVWritter.WhiteData();
+		String csvPath = rootFile.getParentFile().getParentFile().getAbsolutePath();
+		exprerimentCSVWritter = new ExprerimentCSVWritter(headers, dataList, csvPath, "Experimento.csv");
+		exprerimentCSVWritter.WriteData();
 				
 	}
 

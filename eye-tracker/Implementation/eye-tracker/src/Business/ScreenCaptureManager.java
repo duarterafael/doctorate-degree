@@ -103,8 +103,8 @@ public class ScreenCaptureManager {
 					movieController.startRecording(currentTime);
 					gazeController.startRecording(currentTime);
 				} else {
-					movieController.startRecording(workingDirectory + "\\" + currentTime);
-					gazeController.startRecording(workingDirectory + "\\" + currentTime);
+					movieController.startRecording(workingDirectory + "\\_" + currentTime);
+					gazeController.startRecording(workingDirectory + "\\_" + currentTime);
 				}
 
 			} else {
@@ -164,7 +164,7 @@ public class ScreenCaptureManager {
 		}
 	}
 	
-	private String getCurrentTime() {
+	public static String getCurrentTime() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy MM dd HH'h'mm'm'ss's'");
 		Date date = new Date();
 

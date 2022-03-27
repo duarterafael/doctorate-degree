@@ -17,7 +17,7 @@ public class ExprerimentCSVWritter {
 		this.fileName = fileName;
 	}
 	
-	public void WhiteData()
+	public void WriteData()
 	{
 		try {
 			String absolutPath = "";
@@ -28,8 +28,9 @@ public class ExprerimentCSVWritter {
 			}
 			
 			File csvFile = new File(absolutPath);
-			FileWriter csvwriter = new FileWriter(csvFile);
-			if(csvFile.exists())
+			boolean isFirstExeperiment = !csvFile.exists();
+			FileWriter csvwriter = new FileWriter(csvFile, true);
+			if(isFirstExeperiment)
 			{
 				for(String header : headers)
 				{

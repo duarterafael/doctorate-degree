@@ -8,10 +8,8 @@ import views.ExperimentScreen;
 
 public class StartProject {
 	public static void main(String args[]) {
-		
 		ExperimentScreen experimentScreen = new ExperimentScreen();
-		showOnScreen( 1, experimentScreen.frame );
-		
+		showOnScreen( 1, experimentScreen.frame );	
 	}
 	
 	public static void showOnScreen( int screen, JFrame frame ) {
