@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +33,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import Business.Constants;
 import Business.Experiment;
+import Business.ExprerimentCSVWritter;
 import Business.ModelType;
 import Business.Question;
 import Business.ScreenCaptureManager;
@@ -52,8 +55,10 @@ public class ExperimentScreen {
 	private int questionsIndex = 0;
 	private JLabel imageLabel;
 	private ScreenCaptureManager screenCaptureManager;
+	private ExprerimentCSVWritter exprerimentCSVWritter;
 
 	public ExperimentScreen() {
+		
 		DataController gc = new DataController();
 		MovieController mc = new MovieController();
 		screenCaptureManager = new ScreenCaptureManager(gc, mc);
@@ -109,6 +114,7 @@ public class ExperimentScreen {
 					experiment = new Experiment(
 							ModelType.getByDescription(comboBoxmodelTypes.getSelectedItem().toString()),
 							textParticipantId.getText());
+					
 					firstPanel.setVisible(false);
 					secondPanel();
 				}
@@ -196,11 +202,12 @@ public class ExperimentScreen {
 							
 							setImage(questionsIndex);
 						} else {
-							
+							screenCaptureManager.endRecording();
+							storeExperimentData();
 							JOptionPane.showMessageDialog(frame,
 									"End of experiment.\r\n" + "Thank you so much for contributing to our experiment!",
 									"End experiment message", JOptionPane.WARNING_MESSAGE);
-							screenCaptureManager.endRecording();
+							
 						}
 
 					}
@@ -212,6 +219,25 @@ public class ExperimentScreen {
 		secondPanel.setFocusable(true);
 		frame.add(secondPanel);
 	}
-
+	private void storeExperimentData()
+	{
+		List<String> headers = new LinkedList<String>();
+		headers.add("Participant Id");
+		headers.add("Model Tyle");
+		headers.add("Score");
+		List<String> data = new LinkedList<String>();
+		data.add(experiment.getParticipant().getID());
+		data.add(experiment.getModelType().getdescription());
+		data.add(experiment.getScore()+"");
+		
+		for(int i = 0; i < Constants.qtyQuestions; i++) {
+			headers.add("Q"+(i+1));
+			data.add(experiment.getResponses().get(i).toString());
+		}
+		List<List<String>> dataList = Arrays.asList(data);
+		exprerimentCSVWritter = new ExprerimentCSVWritter(headers, dataList, screenCaptureManager.workingDirectory, "Experimento.csv");
+		exprerimentCSVWritter.WhiteData();
+				
+	}
 
 }
