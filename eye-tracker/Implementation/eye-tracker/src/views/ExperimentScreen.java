@@ -2,20 +2,15 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,9 +18,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.io.File; 
+
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -34,13 +28,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import Business.Constants;
 import Business.Experiment;
 import Business.ExprerimentCSVWritter;
 import Business.ModelType;
-import Business.Question;
 import Business.ScreenCaptureManager;
 import controllers.DataController;
 import controllers.MovieController;
@@ -54,7 +46,6 @@ public class ExperimentScreen {
 	private static final String DEFUALT_MODEL_TYPE = "Select a model type";
 	private Experiment experiment;
 	private JPanel firstPanel;
-	private JPanel secondPanel;
 	private int questionsIndex = 0;
 	private JLabel imageLabel;
 	private ScreenCaptureManager screenCaptureManager;
@@ -68,17 +59,16 @@ public class ExperimentScreen {
 		MovieController mc = new MovieController();
 		screenCaptureManager = new ScreenCaptureManager(gc, mc);
 		frame = new JFrame();
-		frame.setBackground(Color.WHITE);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.setTitle("PhD experiment APP");
 		frame.setLocation(0, 0);
+		frame.setSize(200, 200);
 		frame.add(firstPanel());
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setUndecorated(true);
 		frame.setVisible(true);
-		frame.setBackground(Color.WHITE);
 	}
 
 	private JPanel firstPanel() {
@@ -100,8 +90,8 @@ public class ExperimentScreen {
 		JComboBox comboBoxmodelTypes = new JComboBox(modelTypes);
 		comboBoxmodelTypes.setFont(font1);
 
-		comboBoxmodelTypes.setSelectedIndex(1); // REMOVER THIS
-		textParticipantId.setText("Rafael Duarte");// REMOVE THIS
+		//comboBoxmodelTypes.setSelectedIndex(1); // REMOVER THIS
+		//textParticipantId.setText("Rafael Duarte");// REMOVE THIS
 
 		JButton buttonLogin = new JButton("Start");
 		
@@ -125,7 +115,54 @@ public class ExperimentScreen {
 							textParticipantId.getText());
 					
 					firstPanel.setVisible(false);
-					secondPanel();
+					
+					KeyListener listener = new KeyListener() {
+						@Override
+						public void keyTyped(KeyEvent e) {
+						}
+
+						@Override
+						public void keyPressed(KeyEvent e) {
+							
+						}
+
+						@Override
+						public void keyReleased(KeyEvent e) {
+							String response = KeyEvent.getKeyText(e.getKeyCode()).toUpperCase();
+							System.out.println(">>>>>>>>>>>>>>"+response);
+							if (validResponses.contains(response)) {
+								if (questionsIndex < experiment.getQuestions().size()) {
+									//System.out.println("keyPressed=" + response);
+
+									experiment.getResponses().add(response.charAt(0));
+
+									questionsIndex++;
+									if (questionsIndex < experiment.getQuestions().size()) {
+										screenCaptureManager.endRecording();
+										setCurrentOutputDir();
+										screenCaptureManager.startRecording();
+										
+										setImage(questionsIndex);
+									} else {
+										screenCaptureManager.endRecording();
+										storeExperimentData();
+										JOptionPane.showMessageDialog(frame,
+												"End of experiment.\r\n" + "Thank you so much for contributing to our experiment!",
+												"End experiment message", JOptionPane.WARNING_MESSAGE);
+										
+									}
+
+								}
+							}
+						}
+					};
+					
+					frame.addKeyListener(listener);
+					frame.setFocusable(true);
+					
+					setCurrentOutputDir();
+					screenCaptureManager.startRecording();
+					setImage(questionsIndex);
 				}
 			}
 		});
@@ -170,7 +207,8 @@ public class ExperimentScreen {
 				imageLabel = new JLabel();
 			}
 			imageLabel.setIcon(image);
-			secondPanel.add(imageLabel, BorderLayout.CENTER);
+			frame.add(imageLabel, BorderLayout.CENTER);
+			frame.setFocusable(true);
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -186,56 +224,7 @@ public class ExperimentScreen {
 	}
 
 	public void secondPanel() {
-		secondPanel = new JPanel(new BorderLayout());
-		setCurrentOutputDir();
-		screenCaptureManager.startRecording();
-		setImage(questionsIndex);
 		
-
-		KeyListener listener = new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				String response = KeyEvent.getKeyText(e.getKeyCode()).toUpperCase();
-
-				if (validResponses.contains(response)) {
-					if (questionsIndex < experiment.getQuestions().size()) {
-						//System.out.println("keyPressed=" + response);
-
-						experiment.getResponses().add(response.charAt(0));
-
-						questionsIndex++;
-						if (questionsIndex < experiment.getQuestions().size()) {
-							screenCaptureManager.endRecording();
-							setCurrentOutputDir();
-							screenCaptureManager.startRecording();
-							
-							setImage(questionsIndex);
-						} else {
-							screenCaptureManager.endRecording();
-							storeExperimentData();
-							JOptionPane.showMessageDialog(frame,
-									"End of experiment.\r\n" + "Thank you so much for contributing to our experiment!",
-									"End experiment message", JOptionPane.WARNING_MESSAGE);
-							
-						}
-
-					}
-				}
-			}
-		};
-
-		secondPanel.addKeyListener(listener);
-		secondPanel.setFocusable(true);
-		frame.add(secondPanel);
 	}
 	private void storeExperimentData()
 	{
@@ -255,7 +244,7 @@ public class ExperimentScreen {
 		data.add(experiment.getModelType().getdescription());
 		data.add(experiment.getScore()+"");
 		
-		for(int i = 0; i < Constants.qtyQuestions; i++) {
+		for(int i = 1; i < Constants.qtyQuestions; i++) {
 			headers.add("Q"+(i+1));
 			data.add(experiment.getResponses().get(i).toString());
 		}
