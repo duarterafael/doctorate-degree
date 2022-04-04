@@ -1,0 +1,2 @@
+a1
+avg((g1+g2)/d,5) #users guide meditation. Use 1.8/3.5

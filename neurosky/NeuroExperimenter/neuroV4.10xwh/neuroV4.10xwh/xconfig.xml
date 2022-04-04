@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<config>
+  <keyword>
+    <minTextBox>1.8</minTextBox>
+    <highTextBox>3.5</highTextBox>
+    <perfDefaultBox>False</perfDefaultBox>
+    <selectPerfBox>9</selectPerfBox>
+    <audioTone>False</audioTone>
+    <audioFile>False</audioFile>
+    <audioOff>False</audioOff>
+    <reverseVolCheckBox>False</reverseVolCheckBox>
+    <audioFileName>D:\MyApps\neuro\audio.wav</audioFileName>
+    <emulationOn>False</emulationOn>
+    <headsetOn>False</headsetOn>
+    <replayLogOn>False</replayLogOn>
+    <replaySpeed>1</replaySpeed>
+    <pipeOn>True</pipeOn>
+    <csvLog>False</csvLog>
+    <Rlog>False</Rlog>
+    <ARFFlog>False</ARFFlog>
+    <formulaBox>avg((g1+g2)/d,5) #users guide meditation. Use 1.8/3.5</formulaBox>
+    <baselineLengthBox>0</baselineLengthBox>
+    <sessionLengthBox>36</sessionLengthBox>
+    <historyButton>True</historyButton>
+    <secsCntr>2100</secsCntr>
+    <lastSampleButton>False</lastSampleButton>
+    <performanceButton>False</performanceButton>
+    <baselineAvg>False</baselineAvg>
+    <perfAvg>False</perfAvg>
+    <ratioAvg>False</ratioAvg>
+    <diffAvg>False</diffAvg>
+    <intMinTextBox>.5</intMinTextBox>
+    <portUsed>COM6</portUsed>
+    <audioPink>True</audioPink>
+  </keyword>
+</config>

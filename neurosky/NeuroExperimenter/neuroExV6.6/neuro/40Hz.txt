@@ -1,0 +1,10 @@
+The 40 Hz sound was generated via https://www.szynalski.com/tone-generator/. That was played via "stereo mix" (open the "sound control panel" and enable it).
+Then, Audacity was used (along with "stereo mix" as the source) to record the sound from the website as it was played.
+Audacity was then used to export it as a .wav file.
+
+The radiolab show on 40Hz is at https://www.diytdcs.com/tag/40hz/.
+
+Youtube light flash: https://www.youtube.com/watch?v=uaiiJsfgP58
+
+Binaural beats: https://mynoise.net/NoiseMachines/binauralBrainwaveGenerator.php
+stroboscope: http://moodlight.org/#3288

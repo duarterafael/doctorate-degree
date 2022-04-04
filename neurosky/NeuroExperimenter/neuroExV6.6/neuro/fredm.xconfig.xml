@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<config>
+  <keyword>
+    <minTextBox>2</minTextBox>
+    <highTextBox>3</highTextBox>
+    <intMinTextBox>2.5</intMinTextBox>
+    <perfDefaultBox>False</perfDefaultBox>
+    <selectPerfBox>7</selectPerfBox>
+    <audioTone>False</audioTone>
+    <audioPink>False</audioPink>
+    <audioFile>False</audioFile>
+    <audioOff>True</audioOff>
+    <reverseVolCheckBox>False</reverseVolCheckBox>
+    <audioFileName></audioFileName>
+    <emulationOn>True</emulationOn>
+    <headsetOn>False</headsetOn>
+    <replayLogOn>False</replayLogOn>
+    <replaySpeed>1</replaySpeed>
+    <pipeOn>False</pipeOn>
+    <csvLog>False</csvLog>
+    <Rlog>False</Rlog>
+    <ARFFlog>False</ARFFlog>
+    <formulaBox>a1 &gt; a2</formulaBox>
+    <baselineLengthBox>3</baselineLengthBox>
+    <sessionLengthBox>35</sessionLengthBox>
+    <historyButton>False</historyButton>
+    <secsCntr>5</secsCntr>
+    <lastSampleButton>False</lastSampleButton>
+    <performanceButton>True</performanceButton>
+    <baselineAvg>False</baselineAvg>
+    <perfAvg>False</perfAvg>
+    <ratioAvg>False</ratioAvg>
+    <diffAvg>False</diffAvg>
+    <musicSel></musicSel>
+    <musicNote>A4| B4| C5| D5| E5| F5| G5| A5| B5| C6| </musicNote>
+    <musicEQ>10| 10| 10| 10| 10| 10| 10| 10| 10| 10| </musicEQ>
+    <musicDuration>allEqual</musicDuration>
+    <musicOrder>asListed</musicOrder>
+  </keyword>
+</config>

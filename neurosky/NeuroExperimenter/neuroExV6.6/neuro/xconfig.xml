@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<config>
+  <keyword>
+    <portUsed>COM3</portUsed>
+    <minTextBox>1.8</minTextBox>
+    <highTextBox>3.5</highTextBox>
+    <intMinTextBox>1.8</intMinTextBox>
+    <perfDefaultBox>False</perfDefaultBox>
+    <selectPerfBox>0</selectPerfBox>
+    <audioTone>False</audioTone>
+    <audioPink>False</audioPink>
+    <audioFile>True</audioFile>
+    <audioOff>False</audioOff>
+    <reverseVolCheckBox>False</reverseVolCheckBox>
+    <audioFileName>D:\MyApps\neuro\40Hz.wav</audioFileName>
+    <emulationOn>True</emulationOn>
+    <headsetOn>False</headsetOn>
+    <replayLogOn>False</replayLogOn>
+    <replaySpeed>1</replaySpeed>
+    <pipeOn>False</pipeOn>
+    <csvLog>False</csvLog>
+    <Rlog>True</Rlog>
+    <ARFFlog>False</ARFFlog>
+    <formulaBox>avg((g1+g2)/d,5) #users guide 75% Use 1.8/3.5</formulaBox>
+    <baselineLengthBox>2</baselineLengthBox>
+    <sessionLengthBox>4</sessionLengthBox>
+    <historyButton>False</historyButton>
+    <secsCntr>60</secsCntr>
+    <lastSampleButton>False</lastSampleButton>
+    <performanceButton>False</performanceButton>
+    <baselineAvg>False</baselineAvg>
+    <perfAvg>False</perfAvg>
+    <ratioAvg>False</ratioAvg>
+    <diffAvg>False</diffAvg>
+    <musicSel>1| 4| </musicSel>
+    <musicNote>A4| B4| C5| D5| E5| F5| G5| A5| B5| C6| </musicNote>
+    <musicEQ>10| 10| 10| 10| 6| 10| 10| 10| 10| 10| </musicEQ>
+    <musicDuration>viaStrength</musicDuration>
+    <musicOrder>byStrength</musicOrder>
+  </keyword>
+</config>

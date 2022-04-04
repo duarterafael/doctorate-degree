@@ -1,0 +1,37 @@
+Para iniciar conect o neurso sky via bluethoo.
+Exite duas opções na lista. Seleciona a que pede senha (0000)
+Para testar a coneção instale ThinkGear Connector (E:\Google Drive\Doutorado\Ecomp\dev\doctorate-degree\neurosky\Initial kit\Windows Setup Kit\Windows Setup Kit)
+E execute MindWave Mobile Tutorial (E:\Google Drive\Doutorado\Ecomp\dev\doctorate-degree\neurosky\Initial kit\tutorial_windows_v1.2.3\tutorial_windows_v1.2.3)
+Se não funcionar reinicei a maquina
+
+Ferramentas que já existem
+
+-Brainwave Visualizer
+Brainwave-Visualizer-Setup-v2.0.6
+Ferramenta que mostra as ondas em radar
+https://store.neurosky.com/products/visualizer
+https://youtu.be/FeDrfuJXW6Y
+
+-LucidScribe
+*Instalação: 
+Instale primeiro: LucidScribe e em seguida o que é um plugin LucidScribe.NeuroSky.ThinkGear.EEG.1.1.8
+Com o neurosky já conectado execute a ferramenta e selecionar o porta COM (selecionei a 6)
+Ferramentas mais completa. Exibe os dados secionado por tempo, tem aopção de exportação em XML e diz ter para CSV mais não consguir achar.
+https://lucidcode.com/lucidscribe/
+https://lsdbase.org/category/hardware/NeuroSky-ThinkGear-EEG/
+https://github.com/lucidcode/LucidScribe-ThinkGear-EEG
+
+-NeuroExperimenter
+Permite exportar em CSV, mas n tem o dados como queriamos
+Cuidado para n ficar no emulador
+https://store.neurosky.com/products/neuroexperimenter
+https://sites.google.com/view/fredm/home#h.69q83qkyjwqn
+
+-Documentações neurosky
+https://github.com/junjunjd/rustymind/tree/main/docs
+
+-Códigos abertos
+https://github.com/borg/ThinkGear-Java-socket
+https://github.com/WOLFI3654/ThinkGearConnector
+https://github.com/oliexe/MindSetUWP
+

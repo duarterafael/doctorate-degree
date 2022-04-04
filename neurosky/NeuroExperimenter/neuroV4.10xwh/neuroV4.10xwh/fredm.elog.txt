@@ -1,0 +1,70 @@
+Error Log started 3/9/2019
+Please email this log to fredm73@gmail.com
+
+
+3/9/2019 2:20 PM-EEG.exe--built: Sat 03/09/2019 14:20:41.51 
+   at ErrorLog.ErrorLogger.log(String msg, Boolean hdr, Boolean trace) in D:\Documents\Visual Studio 2017\Projects\EEG\ErrorLog\ErrorLogger.cs:line 49
+   at EEG.EEGform.OnUnhandledException(Object sender, UnhandledExceptionEventArgs args) in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 899
+   at System.Windows.Forms.FileDialog.set_Filter(String value)
+   at EEG.EEGform.logFileButton_Click(Object sender, EventArgs e) in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 773
+   at System.Windows.Forms.Control.OnClick(EventArgs e)
+   at System.Windows.Forms.Button.OnClick(EventArgs e)
+   at System.Windows.Forms.Button.OnMouseUp(MouseEventArgs mevent)
+   at System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   at System.Windows.Forms.Control.WndProc(Message& m)
+   at System.Windows.Forms.ButtonBase.WndProc(Message& m)
+   at System.Windows.Forms.Button.WndProc(Message& m)
+   at System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   at System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   at System.Windows.Forms.NativeWindow.DebuggableCallback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+   at System.Windows.Forms.UnsafeNativeMethods.DispatchMessageW(MSG& msg)
+   at System.Windows.Forms.Application.ComponentManager.System.Windows.Forms.UnsafeNativeMethods.IMsoComponentManager.FPushMessageLoop(IntPtr dwComponentID, Int32 reason, Int32 pvLoopData)
+   at System.Windows.Forms.Application.ThreadContext.RunMessageLoopInner(Int32 reason, ApplicationContext context)
+   at System.Windows.Forms.Application.ThreadContext.RunMessageLoop(Int32 reason, ApplicationContext context)
+   at System.Windows.Forms.Application.Run(Form mainForm)
+   at EEG.Program.Main() in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\Program.cs:line 18
+
+
+Unhandled exception--m01--Filter string you provided is not valid. The filter string must contain a description of the filter, followed by the vertical bar (|) and the filter pattern. The strings for different filtering options must also be separated by the vertical bar. Example: "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+   at System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+   at System.Environment.get_StackTrace()
+   at EEG.EEGform.OnUnhandledException(Object sender, UnhandledExceptionEventArgs args) in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 899
+   at System.Windows.Forms.FileDialog.set_Filter(String value)
+   at EEG.EEGform.logFileButton_Click(Object sender, EventArgs e) in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 773
+   at System.Windows.Forms.Control.OnClick(EventArgs e)
+   at System.Windows.Forms.Button.OnClick(EventArgs e)
+   at System.Windows.Forms.Button.OnMouseUp(MouseEventArgs mevent)
+   at System.Windows.Forms.Control.WmMouseUp(Message& m, MouseButtons button, Int32 clicks)
+   at System.Windows.Forms.Control.WndProc(Message& m)
+   at System.Windows.Forms.ButtonBase.WndProc(Message& m)
+   at System.Windows.Forms.Button.WndProc(Message& m)
+   at System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   at System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   at System.Windows.Forms.NativeWindow.DebuggableCallback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+   at System.Windows.Forms.UnsafeNativeMethods.DispatchMessageW(MSG& msg)
+   at System.Windows.Forms.Application.ComponentManager.System.Windows.Forms.UnsafeNativeMethods.IMsoComponentManager.FPushMessageLoop(IntPtr dwComponentID, Int32 reason, Int32 pvLoopData)
+   at System.Windows.Forms.Application.ThreadContext.RunMessageLoopInner(Int32 reason, ApplicationContext context)
+   at System.Windows.Forms.Application.ThreadContext.RunMessageLoop(Int32 reason, ApplicationContext context)
+   at System.Windows.Forms.Application.Run(Form mainForm)
+   at EEG.Program.Main() in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\Program.cs:line 18
+
+3/9/2019 5:49 PM-EEG.exe--built: Sat 03/09/2019 17:45:27.48 
+   at ErrorLog.ErrorLogger.log(String msg, Boolean hdr, Boolean trace) in D:\Documents\Visual Studio 2017\Projects\EEG\ErrorLog\ErrorLogger.cs:line 49
+   at EEG.EEGform.OnUnhandledException(Object sender, UnhandledExceptionEventArgs args) in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 912
+   at System.Windows.Forms.ListBox.set_SelectedIndex(Int32 value)
+   at EEG.Defaults.getSettings(EEGform f, XConfig cv) in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\Defaults.cs:line 54
+   at EEG.EEGform.startUp() in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 1293
+   at EEG.EEGform..ctor() in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 68
+   at EEG.Program.Main() in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\Program.cs:line 18
+
+
+Unhandled exception--m01--InvalidArgument=Value of '11' is not valid for 'SelectedIndex'.
+Parameter name: SelectedIndex
+   at System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+   at System.Environment.get_StackTrace()
+   at EEG.EEGform.OnUnhandledException(Object sender, UnhandledExceptionEventArgs args) in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 912
+   at System.Windows.Forms.ListBox.set_SelectedIndex(Int32 value)
+   at EEG.Defaults.getSettings(EEGform f, XConfig cv) in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\Defaults.cs:line 54
+   at EEG.EEGform.startUp() in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 1293
+   at EEG.EEGform..ctor() in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\EEGform.cs:line 68
+   at EEG.Program.Main() in D:\Documents\Visual Studio 2017\Projects\EEG\EEG\Program.cs:line 18
