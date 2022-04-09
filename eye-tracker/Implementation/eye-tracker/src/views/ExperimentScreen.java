@@ -12,12 +12,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -36,6 +38,9 @@ import Business.ModelType;
 import Business.ScreenCaptureManager;
 import controllers.DataController;
 import controllers.MovieController;
+import neurosky.ThinkGearSocket;
+import neurosky.outpup.EEGDataManager;
+import neurosky.outpup.EEGRaw;
 
 public class ExperimentScreen {
 
@@ -50,8 +55,12 @@ public class ExperimentScreen {
 	private JLabel imageLabel;
 	private ScreenCaptureManager screenCaptureManager;
 	private ExprerimentCSVWritter exprerimentCSVWritter;
+	private ExprerimentCSVWritter neuroskyCSVWritter;
 	private File rootFile = null;
 	private String exemperimentDataTime = ScreenCaptureManager.getCurrentTime();
+	private DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+	private File currentSubDir;
+	private ThinkGearSocket thinkGearSocket;
 
 	public ExperimentScreen() {
 		
@@ -139,17 +148,35 @@ public class ExperimentScreen {
 									questionsIndex++;
 									if (questionsIndex < experiment.getQuestions().size()) {
 										screenCaptureManager.endRecording();
+										thinkGearSocket.stop();
+										storeNeuroSkyData(thinkGearSocket.getEEGDataManager(), questionsIndex);
+									
+										
 										setCurrentOutputDir();
 										screenCaptureManager.startRecording();
+										thinkGearSocket = new ThinkGearSocket();
+										try {
+											thinkGearSocket.start();
+										} catch (ConnectException e1) {
+											System.out.print("Erro to start thinkGearSocket. Question Id "+questionsIndex);
+											e1.printStackTrace();
+										}
 										
 										setImage(questionsIndex);
 									} else {
 										screenCaptureManager.endRecording();
 										storeExperimentData();
-										JOptionPane.showMessageDialog(frame,
-												"End of experiment.\r\n" + "Thank you so much for contributing to our experiment!",
-												"End experiment message", JOptionPane.WARNING_MESSAGE);
 										
+										thinkGearSocket.stop();
+										storeNeuroSkyData(thinkGearSocket.getEEGDataManager(), questionsIndex);
+										
+										try {
+											imageLabel.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/resources/tks.jpg"))));
+										} catch (IOException e1) {
+											// TODO Auto-generated catch block
+											e1.printStackTrace();
+										}
+									    
 									}
 
 								}
@@ -162,7 +189,15 @@ public class ExperimentScreen {
 					
 					setCurrentOutputDir();
 					screenCaptureManager.startRecording();
+					thinkGearSocket = new ThinkGearSocket();
+					try {
+						thinkGearSocket.start();
+					} catch (ConnectException e1) {
+						System.out.print("Erro to start thinkGearSocket. Question Id "+questionsIndex);
+						e1.printStackTrace();
+					}
 					setImage(questionsIndex);
+					
 				}
 			}
 		});
@@ -217,8 +252,8 @@ public class ExperimentScreen {
 	
 	private void setCurrentOutputDir()
 	{
-		String subDir = rootFile.getName()+"_"+(questionsIndex+1)+"_"+ScreenCaptureManager.getCurrentTime();
-		File currentSubDir = new File(rootFile.getAbsolutePath()+"\\"+subDir);
+		String subDir = (questionsIndex+1)+"_"+ScreenCaptureManager.getCurrentTime();
+		currentSubDir = new File(rootFile.getAbsolutePath()+"\\"+subDir);
 		currentSubDir.mkdirs();
 		screenCaptureManager.workingDirectory = currentSubDir.getAbsolutePath();
 	}
@@ -226,6 +261,60 @@ public class ExperimentScreen {
 	public void secondPanel() {
 		
 	}
+	
+	private void storeNeuroSkyData(EEGDataManager eegDataManager, int questionId)
+	{
+		List<String> headers = new LinkedList<String>();
+		headers.add("Time stamp");
+		headers.add("Poor Signal Level");
+		headers.add("Blink Strength");
+		headers.add("Attention Level");
+		headers.add("Meditation Level");
+		headers.add("Delta");
+		headers.add("Theta");
+		headers.add("Low Alpha");
+		headers.add("High Alpha");
+		headers.add("Low Beta");
+		headers.add("High Beta");
+		headers.add("Low Gamma");
+		headers.add("Mid Beta");
+		
+		
+		List<List<String>> dataList = new LinkedList<>();
+		for (Entry<Date, EEGRaw> pair : eegDataManager.getEEGRawMap().entrySet()) {
+			List<String> data = new LinkedList<String>();
+			data.add(dateFormat.format(pair.getKey()));
+			EEGRaw raw = pair.getValue();
+			data.add(rawDataToString(pair.getValue().getPoorSignalLevel()));
+			data.add(rawDataToString(pair.getValue().getBlinkStrength()));
+			data.add(rawDataToString(pair.getValue().getAttentionLevel()));
+			data.add(rawDataToString(pair.getValue().getMeditationLevel()));
+			data.add(rawDataToString(pair.getValue().getDelta()));
+			data.add(rawDataToString(pair.getValue().getTheta()));
+			data.add(rawDataToString(pair.getValue().getLow_alpha()));
+			data.add(rawDataToString(pair.getValue().getHigh_alpha()));
+			data.add(rawDataToString(pair.getValue().getLow_beta()));
+			data.add(rawDataToString(pair.getValue().getHigh_beta()));
+			data.add(rawDataToString(pair.getValue().getLow_gamma()));
+			data.add(rawDataToString(pair.getValue().getMid_gamma()));
+			dataList.add(data);
+		 }
+		
+		
+		String csvPath = currentSubDir.getAbsolutePath();
+		String fileName = "Neuroskyoutput_"+questionId+".csv";
+		neuroskyCSVWritter = new ExprerimentCSVWritter(headers, dataList, csvPath, fileName);
+		neuroskyCSVWritter.WriteData();
+	}
+	
+	private String rawDataToString(Integer data)
+	{
+		if(data == null)
+			return "";
+		else
+			return data.toString();
+	}
+	
 	private void storeExperimentData()
 	{
 		List<String> headers = new LinkedList<String>();
@@ -235,7 +324,7 @@ public class ExperimentScreen {
 		headers.add("Score");
 		
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+		
 		Date date = new Date();
 
 		List<String> data = new LinkedList<String>();

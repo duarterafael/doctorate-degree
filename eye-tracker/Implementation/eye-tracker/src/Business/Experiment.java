@@ -35,6 +35,15 @@ public class Experiment {
 	
 	private void feedQuestions()
 	{
+		Question question0 = 
+				new Question("Esta é apenas uma checagem da calibração dos equipamentos\r\n"
+				, "a) Leia as instruções abaixo\r\n"
+						+ "b) Conte cinco segundos antes de ir para o próximo numero.\r\n"
+						+ "c) Olhe os números em sequencia.\r\n"
+						+ "d) Ao chegar no último número pressione umas das seguintes teclas: A, B, C ou D.\r\n"
+						,'D');
+				questions.add(question0);
+		
 		Question question1 = 
 		new Question("1)	O setor de Atendimento participa do processo..."
 		, "a)	... se o proprietário estiver cadastrado.\r\n"

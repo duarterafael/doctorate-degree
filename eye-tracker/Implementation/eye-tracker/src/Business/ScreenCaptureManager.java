@@ -98,13 +98,14 @@ public class ScreenCaptureManager {
 			if (!paused) {
 				pausedTime = 0;
 				String currentTime = getCurrentTime();
+				String fileName = "EyeTacking_"+currentTime;
 
 				if (workingDirectory == null) {
-					movieController.startRecording(currentTime);
-					gazeController.startRecording(currentTime);
+					movieController.startRecording(fileName);
+					gazeController.startRecording(fileName);
 				} else {
-					movieController.startRecording(workingDirectory + "\\_" + currentTime);
-					gazeController.startRecording(workingDirectory + "\\_" + currentTime);
+					movieController.startRecording(workingDirectory + "\\_" + fileName);
+					gazeController.startRecording(workingDirectory + "\\_" + fileName);
 				}
 
 			} else {
@@ -166,6 +167,8 @@ public class ScreenCaptureManager {
 	
 	public static String getCurrentTime() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy MM dd HH'h'mm'm'ss's'");
+		//DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+		
 		Date date = new Date();
 
 		return dateFormat.format(date);

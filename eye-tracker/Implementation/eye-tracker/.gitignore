@@ -6,3 +6,5 @@ bin
 /*wav
 *class
 *.DS_Store
+output/
+output
