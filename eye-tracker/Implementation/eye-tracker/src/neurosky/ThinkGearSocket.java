@@ -83,16 +83,21 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.time.DateUtils;
 
+import Business.ExprerimentCSVWritter;
 import neurosky.json.JSONException;
 import neurosky.json.JSONObject;
 import neurosky.outpup.EEGAction;
@@ -117,26 +122,25 @@ public class ThinkGearSocket  implements Runnable{
   
 	public static void main(String _args[]) {
 		ThinkGearSocket neuroSocket = new ThinkGearSocket();
+//		  try {
+//		    neuroSocket.start();
+//		    neuroSocket.stop();
+//		    HashMap<Date, EEGRaw> x = neuroSocket.getEEGDataManager().getEEGRawMap();
+//		    for (Entry<Date, EEGRaw> pair : x.entrySet()) {
+//		        System.out.println("Key"+pair.getKey().toString());
+//		        System.out.println("Value"+pair.getValue().toString());
+//		    }
+//		  } 
+//		  catch (Exception e) {
+//		    System.out.println("Is ThinkGear running??");
+//		  }
+//		  
 		  try {
-		    neuroSocket.start();
-		    neuroSocket.stop();
-		    HashMap<Date, EEGRaw> x = neuroSocket.getEEGDataManager().getEEGRawMap();
-		    for (Entry<Date, EEGRaw> pair : x.entrySet()) {
-		        System.out.println("Key"+pair.getKey().toString());
-		        System.out.println("Value"+pair.getValue().toString());
-		    }
-		  } 
-		  catch (Exception e) {
-		    System.out.println("Is ThinkGear running??");
-		  }
-		  
-		  
-		  ThinkGearSocket neuroSocket2 = new ThinkGearSocket();
-		  try {
-			neuroSocket2.start();
+			neuroSocket.start();
 		    Thread.sleep(60000);
-		    neuroSocket2.stop();
+		    neuroSocket.stop();
 		    HashMap<Date, EEGRaw> y = neuroSocket.getEEGDataManager().getEEGRawMap();
+		    storeNeuroSkyData(neuroSocket.getEEGDataManager());
 		    for (Entry<Date, EEGRaw> pair : y.entrySet()) {
 		        System.out.println("Key"+pair.getKey().toString());
 		        System.out.println("Value"+pair.getValue().toString());
@@ -145,8 +149,64 @@ public class ThinkGearSocket  implements Runnable{
 		  } 
 		  catch (Exception e) {
 		    System.out.println("Is ThinkGear running??");
+		    e.printStackTrace();
 		  }
 	}
+	
+	private static void storeNeuroSkyData(EEGDataManager eegDataManager)
+	{
+		List<String> headers = new LinkedList<String>();
+		headers.add("Time stamp");
+		headers.add("Poor Signal Level");
+		headers.add("Blink Strength");
+		headers.add("Attention Level");
+		headers.add("Meditation Level");
+		headers.add("Delta");
+		headers.add("Theta");
+		headers.add("Low Alpha");
+		headers.add("High Alpha");
+		headers.add("Low Beta");
+		headers.add("High Beta");
+		headers.add("Low Gamma");
+		headers.add("Mid Beta");
+		
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+		
+		List<List<String>> dataList = new LinkedList<>();
+		for (Entry<Date, EEGRaw> pair : eegDataManager.getEEGRawMap().entrySet()) {
+			List<String> data = new LinkedList<String>();
+			data.add(dateFormat.format(pair.getKey()));
+			EEGRaw raw = pair.getValue();
+			data.add(rawDataToString(pair.getValue().getPoorSignalLevel()));
+			data.add(rawDataToString(pair.getValue().getBlinkStrength()));
+			data.add(rawDataToString(pair.getValue().getAttentionLevel()));
+			data.add(rawDataToString(pair.getValue().getMeditationLevel()));
+			data.add(rawDataToString(pair.getValue().getDelta()));
+			data.add(rawDataToString(pair.getValue().getTheta()));
+			data.add(rawDataToString(pair.getValue().getLow_alpha()));
+			data.add(rawDataToString(pair.getValue().getHigh_alpha()));
+			data.add(rawDataToString(pair.getValue().getLow_beta()));
+			data.add(rawDataToString(pair.getValue().getHigh_beta()));
+			data.add(rawDataToString(pair.getValue().getLow_gamma()));
+			data.add(rawDataToString(pair.getValue().getMid_gamma()));
+			dataList.add(data);
+		 }
+		
+		
+		String fileName = "1teste_neuro_sky.csv";
+		ExprerimentCSVWritter neuroskyCSVWritter = new ExprerimentCSVWritter(headers, dataList, null, fileName);
+		neuroskyCSVWritter.WriteData();
+	}
+	
+	private static String rawDataToString(Integer data)
+	{
+		if(data == null)
+			return "";
+		else
+			return data.toString();
+	}
+	
   
   private boolean running = true;
 	  public ThinkGearSocket(String _appName,String _appKey){
@@ -313,31 +373,24 @@ public class ThinkGearSocket  implements Runnable{
 	}
 	
 	  public void triggerPoorSignalEvent(Date timeStamp, int poorSignalLevel) {
-		  System.out.println("timeStamp"+timeStamp+"poorSignalLevel "+poorSignalLevel);
+		  //System.out.println("timeStamp"+timeStamp+"poorSignalLevel "+poorSignalLevel);
 		  eegDataManager.AddEEGMap(EEGAction.POOR_SIGNAL_LEVEL, timeStamp, poorSignalLevel, null, null, null, null, null, null, null, null, null, null, null);
 			
 	  }  
 
 	
 	  public void triggerBlinkEvent(Date timeStamp, int blinkStrength) {
-		  System.out.println("timeStamp"+timeStamp+"blinkStrength "+blinkStrength);
+		//  System.out.println("timeStamp"+timeStamp+"blinkStrength "+blinkStrength);
 		  eegDataManager.AddEEGMap(EEGAction.BLINK_STRENGTH, timeStamp, null, blinkStrength, null, null, null, null, null, null, null, null, null, null);
 			
 	  }
 
 
-	  public void triggerAttentionEvent(Date timeStamp, int attentionLevel) {
+	  public void triggerAttentionAndMeditationEvent(Date timeStamp, int attentionLevel, int meditationLevel) {
 		  System.out.println("timeStamp"+timeStamp+"attentionLevel "+attentionLevel);
-		  eegDataManager.AddEEGMap(EEGAction.E_SENSE, timeStamp, null, null, attentionLevel, null, null, null, null, null, null, null, null, null);
+		  eegDataManager.AddEEGMap(EEGAction.E_SENSE, timeStamp, null, null, attentionLevel, meditationLevel, null, null, null, null, null, null, null, null);
 			
 	  }
-
-	  public void triggerMeditationEvent(Date timeStamp, int meditationLevel) {
-		  System.out.println("timeStamp"+timeStamp+"meditationLevel "+meditationLevel);
-		  eegDataManager.AddEEGMap(EEGAction.E_SENSE, timeStamp, null, null, null, meditationLevel, null, null, null, null, null, null, null, null);
-			
-	  }
-
 
 
 	  public void triggerEEGEvent(Date timeStamp, 
@@ -349,15 +402,15 @@ public class ThinkGearSocket  implements Runnable{
 			  					int high_beta, 
 			  					int low_gamma, 
 			  					int mid_gamma) {
-		  System.out.println("timeStamp "+timeStamp);
-		  System.out.println("delta "+delta);
-		  System.out.println("theta "+theta);
-		  System.out.println("low_alpha "+low_alpha);
-		  System.out.println("high_alpha "+high_alpha);
-		  System.out.println("low_beta "+low_beta);
-		  System.out.println("high_beta "+high_beta);
-		  System.out.println("low_gamma "+low_gamma);
-		  System.out.println("mid_gamma "+mid_gamma);
+//		  System.out.println("timeStamp "+timeStamp);
+//		  System.out.println("delta "+delta);
+//		  System.out.println("theta "+theta);
+//		  System.out.println("low_alpha "+low_alpha);
+//		  System.out.println("high_alpha "+high_alpha);
+//		  System.out.println("low_beta "+low_beta);
+//		  System.out.println("high_beta "+high_beta);
+//		  System.out.println("low_gamma "+low_gamma);
+//		  System.out.println("mid_gamma "+mid_gamma);
 		  eegDataManager.AddEEGMap(EEGAction.EEG_POWER, timeStamp, null, null, null, null, delta, theta, low_alpha, high_alpha, low_beta, high_beta, low_gamma, mid_gamma);
 			
 	  }
@@ -414,8 +467,7 @@ public class ThinkGearSocket  implements Runnable{
 				    	
 				    if(key.matches("eSense")){
 				    	JSONObject esense = data.getJSONObject("eSense");
-				    	triggerAttentionEvent(timeStamp, esense.getInt("attention"));
-				    	triggerMeditationEvent(timeStamp, esense.getInt("meditation"));
+				    	triggerAttentionAndMeditationEvent(timeStamp, esense.getInt("attention"), esense.getInt("meditation"));
 				    	
 				    }
 				    if(key.matches("eegPower")){
