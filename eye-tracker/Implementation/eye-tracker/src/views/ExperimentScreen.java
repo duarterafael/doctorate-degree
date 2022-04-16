@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -119,9 +121,7 @@ public class ExperimentScreen {
 					rootFile = new File(screenCaptureManager.workingDirectory);
 					rootFile.mkdirs();
 					
-					experiment = new Experiment(
-							ModelType.getByDescription(comboBoxmodelTypes.getSelectedItem().toString()),
-							textParticipantId.getText());
+					experiment = new Experiment(ModelType.getByDescription(comboBoxmodelTypes.getSelectedItem().toString()), textParticipantId.getText());
 					
 					firstPanel.setVisible(false);
 					
@@ -141,9 +141,8 @@ public class ExperimentScreen {
 							System.out.println(">>>>>>>>>>>>>>"+response);
 							if (validResponses.contains(response)) {
 								if (questionsIndex < experiment.getQuestions().size()) {
-									//System.out.println("keyPressed=" + response);
-
-									experiment.getResponses().add(response.charAt(0));
+									
+									experiment.getQuestions().get(questionsIndex).setResponse(response.charAt(0));
 
 									questionsIndex++;
 									if (questionsIndex < experiment.getQuestions().size()) {
@@ -164,6 +163,10 @@ public class ExperimentScreen {
 										
 										setImage(questionsIndex);
 									} else {
+										experiment.setEndDate(Calendar.getInstance());
+										experiment.getQuestions().get(questionsIndex-1).setEndDate(experiment.getEndDate());
+										experiment.getQuestions().get(questionsIndex-1).setResponse(response.charAt(0));
+										
 										screenCaptureManager.endRecording();
 										storeExperimentData();
 										
@@ -235,6 +238,16 @@ public class ExperimentScreen {
 
 	private void setImage(int index) {
 		ImageIcon image = null;
+		if(index == 0)
+		{
+			experiment.setStartDate(Calendar.getInstance());
+			experiment.getQuestions().get(index).setStartDate(experiment.getStartDate());
+		}else if(questionsIndex < experiment.getQuestions().size())
+		{
+			experiment.getQuestions().get((index-1)).setEndDate(Calendar.getInstance());
+			experiment.getQuestions().get(index).setStartDate(experiment.getQuestions().get((index-1)).getEndDate());
+		}
+		
 		try {
 			String path = experiment.getQuestions().get(index).getPaht();
 			image = new ImageIcon(ImageIO.read(getClass().getResource(path)));
@@ -318,24 +331,44 @@ public class ExperimentScreen {
 	private void storeExperimentData()
 	{
 		List<String> headers = new LinkedList<String>();
-		headers.add("Time stamp");
+		headers.add("Start Date");
+		headers.add("End Date");
+		headers.add("Time duration (s)");
 		headers.add("Participant Id");
 		headers.add("Model Tyle");
-		headers.add("Score");
+		headers.add("Total Score");
 		
-		
-		
-		Date date = new Date();
-
 		List<String> data = new LinkedList<String>();
-		data.add(dateFormat.format(date));
+		data.add(dateFormat.format(experiment.getStartDate().getTime()));
+		data.add(dateFormat.format(experiment.getEndDate().getTime()));
+		data.add(""+Constants.calulateDuration(experiment.getStartDate(), experiment.getEndDate()));
+		
 		data.add(experiment.getParticipant().getID());
 		data.add(experiment.getModelType().getdescription());
 		data.add(experiment.getScore()+"");
 		
-		for(int i = 1; i < Constants.qtyQuestions; i++) {
-			headers.add("Q"+(i+1));
-			data.add(experiment.getResponses().get(i).toString());
+		for(int i = 0; i < Constants.qtyQuestions; i++) {
+			String headersQuestionSufix = "Q"+(i+1);
+			
+			headers.add(headersQuestionSufix+" Response");
+			data.add(experiment.getQuestions().get(i).getResponse().toString());
+			
+			headers.add(headersQuestionSufix+" Answer ");
+			data.add(experiment.getQuestions().get(i).getAnswer().toString());
+			
+			headers.add(headersQuestionSufix + " Score");
+			String questionScore = experiment.getQuestions().get(i).getResponse() == experiment.getQuestions().get(i).getAnswer() ? "1" : "0";
+			data.add(questionScore);
+			
+			headers.add(headersQuestionSufix+" Start Date ");
+			data.add(dateFormat.format(experiment.getQuestions().get(i).getStartDate().getTime()));
+			
+			headers.add(headersQuestionSufix+" End Date");
+			data.add(dateFormat.format(experiment.getQuestions().get(i).getEndDate().getTime()));
+			
+			headers.add(headersQuestionSufix+" Time duration (s) ");
+			data.add(""+Constants.calulateDuration(experiment.getQuestions().get(i).getStartDate(), experiment.getQuestions().get(i).getEndDate()));
+			
 		}
 		
 		headers.add("Output data");
@@ -347,5 +380,6 @@ public class ExperimentScreen {
 		exprerimentCSVWritter.WriteData();
 				
 	}
+	
 
 }

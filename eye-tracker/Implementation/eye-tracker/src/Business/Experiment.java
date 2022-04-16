@@ -1,21 +1,46 @@
 package Business;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 
 public class Experiment {
+	private Calendar startDate;
+	private Calendar endDate;
 	private ModelType modelType;
 	private Participant participant;
 	private LinkedList<Question> questions;
-	private LinkedList<Character> responses;
 	
 	public Experiment(ModelType modelType, String paticipantId) {
 		super();
 		this.modelType = modelType;
 		this.participant = new Participant(paticipantId);
 		this.questions = new LinkedList<>();
-		this.responses = new LinkedList<>();
 		feedQuestions();
 	}
+	
+	
+
+	public Calendar getStartDate() {
+		return startDate;
+	}
+	
+	
+	
+	public void setStartDate(Calendar startDate) {
+		this.startDate = startDate;
+	}
+
+
+
+	public void setEndDate(Calendar endDate) {
+		this.endDate = endDate;
+	}
+
+	public Calendar getEndDate() {
+		return endDate;
+	}
+
+
 
 	public ModelType getModelType() {
 		return modelType;
@@ -29,10 +54,6 @@ public class Experiment {
 		return questions;
 	}
 
-	public LinkedList<Character> getResponses() {
-		return responses;
-	}
-	
 	private void feedQuestions()
 	{
 		Question question0 = 
@@ -192,7 +213,7 @@ public class Experiment {
 		int score = 0;
 		for(int i = 0; i < questions.size(); i++)
 		{
-			if(this.questions.get(i).getAnswer().charValue() == this.responses.get(i).charValue())
+			if(this.questions.get(i).getAnswer().charValue() == this.questions.get(i).getResponse().charValue())
 			{
 				score++;
 			}
@@ -200,7 +221,7 @@ public class Experiment {
 		return score;
 	}
 	
-	public LinkedList<Character> getAnswers()
+	private LinkedList<Character> getAnswers()
 	{
 		LinkedList<Character> answers = new LinkedList<Character>();
 		answers.add('D');//1
@@ -219,23 +240,6 @@ public class Experiment {
 		answers.add('A');//14
 		answers.add('C');//15
 		return answers;
-	}
-	
-	public String toStringResponses()
-	{
-		String returnedresponses = "";
-		if(responses == null || responses.isEmpty())
-		{
-			returnedresponses = "NO RESPONSES";
-		}else
-		{
-			int questionID = 1;
-			for (Character response : responses) {
-				returnedresponses += " "+questionID + ") "+response;
-				questionID++;
-			}
-		}
-		return returnedresponses;
 	}
 	
 }
