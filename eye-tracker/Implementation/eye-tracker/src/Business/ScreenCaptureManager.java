@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -159,6 +160,15 @@ public class ScreenCaptureManager {
 
 				BufferedImage screenshot = captureScreen();
 				imageEditor.addCurrentEyePosition(screenshot);
+				
+//				try {
+//					File f = new File(pausedTime  + ".png");
+//					System.out.print(f.getAbsolutePath());
+//					ImageIO.write(screenshot, "png",f);
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 
 				movieController.encodeImage(screenshot, pausedTime);
 			}
@@ -167,7 +177,7 @@ public class ScreenCaptureManager {
 	
 	public static String getCurrentTime() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy MM dd HH'h'mm'm'ss's'");
-		//DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+		//DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss:sss");
 		
 		Date date = new Date();
 

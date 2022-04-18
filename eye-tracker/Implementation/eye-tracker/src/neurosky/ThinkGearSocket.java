@@ -373,21 +373,21 @@ public class ThinkGearSocket  implements Runnable{
 	}
 	
 	  public void triggerPoorSignalEvent(Date timeStamp, int poorSignalLevel) {
-		  //System.out.println("timeStamp"+timeStamp+"poorSignalLevel "+poorSignalLevel);
+		  System.out.println("--->timeStamp "+timeStamp+"poorSignalLevel "+poorSignalLevel);
 		  eegDataManager.AddEEGMap(EEGAction.POOR_SIGNAL_LEVEL, timeStamp, poorSignalLevel, null, null, null, null, null, null, null, null, null, null, null);
 			
 	  }  
 
 	
 	  public void triggerBlinkEvent(Date timeStamp, int blinkStrength) {
-		//  System.out.println("timeStamp"+timeStamp+"blinkStrength "+blinkStrength);
+		System.out.println("--->timeStamp "+timeStamp+"blinkStrength "+blinkStrength);
 		  eegDataManager.AddEEGMap(EEGAction.BLINK_STRENGTH, timeStamp, null, blinkStrength, null, null, null, null, null, null, null, null, null, null);
 			
 	  }
 
 
 	  public void triggerAttentionAndMeditationEvent(Date timeStamp, int attentionLevel, int meditationLevel) {
-		  System.out.println("timeStamp"+timeStamp+"attentionLevel "+attentionLevel);
+		  System.out.println("--->timeStamp "+timeStamp+"attentionLevel "+attentionLevel);
 		  eegDataManager.AddEEGMap(EEGAction.E_SENSE, timeStamp, null, null, attentionLevel, meditationLevel, null, null, null, null, null, null, null, null);
 			
 	  }
@@ -440,7 +440,7 @@ public class ThinkGearSocket  implements Runnable{
 			    Object e = itr.next(); 
 			    String key = e.toString();
 			    
-			    Date timeStamp = DateUtils.truncate(new Date(), Calendar.SECOND);
+			    Date timeStamp = DateUtils.truncate(new Date(), Calendar.MILLISECOND);
 			    
 			    
 			    try{

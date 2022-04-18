@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -38,6 +39,8 @@ import Business.Experiment;
 import Business.ExprerimentCSVWritter;
 import Business.ModelType;
 import Business.ScreenCaptureManager;
+import Business.triangulation.TriangaulationRaw;
+import Business.triangulation.TriangulationManager;
 import controllers.DataController;
 import controllers.MovieController;
 import neurosky.ThinkGearSocket;
@@ -148,6 +151,9 @@ public class ExperimentScreen {
 									if (questionsIndex < experiment.getQuestions().size()) {
 										screenCaptureManager.endRecording();
 										thinkGearSocket.stop();
+										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
+											TriangulationManager.GetInscance().AddTriangulation(pair.getKey(), null, pair.getValue());
+										}
 										storeNeuroSkyData(thinkGearSocket.getEEGDataManager(), questionsIndex);
 									
 										
@@ -171,8 +177,16 @@ public class ExperimentScreen {
 										storeExperimentData();
 										
 										thinkGearSocket.stop();
+										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
+											TriangulationManager.GetInscance().AddTriangulation(pair.getKey(), null, pair.getValue());
+										}
 										storeNeuroSkyData(thinkGearSocket.getEEGDataManager(), questionsIndex);
-										
+										for (Entry<Date, TriangaulationRaw> pair : (TriangulationManager.GetInscance()).getTriangalation().entrySet() ) {
+											if(pair.getValue().getEegRaw() != null && pair.getValue().getGazeData() != null) {
+												System.out.println(pair.getKey());
+												
+											}
+										}
 										try {
 											imageLabel.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/resources/tks.jpg"))));
 										} catch (IOException e1) {
