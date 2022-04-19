@@ -60,10 +60,9 @@ public class ExperimentScreen {
 	private JLabel imageLabel;
 	private ScreenCaptureManager screenCaptureManager;
 	private ExprerimentCSVWritter exprerimentCSVWritter;
-	private ExprerimentCSVWritter neuroskyCSVWritter;
 	private File rootFile = null;
 	private String exemperimentDataTime = ScreenCaptureManager.getCurrentTime();
-	private DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+	
 	private File currentSubDir;
 	private ThinkGearSocket thinkGearSocket;
 
@@ -146,15 +145,17 @@ public class ExperimentScreen {
 								if (questionsIndex < experiment.getQuestions().size()) {
 									
 									experiment.getQuestions().get(questionsIndex).setResponse(response.charAt(0));
-
+									String fileName = "Neuroskyoutput_"+questionsIndex+".csv";
 									questionsIndex++;
 									if (questionsIndex < experiment.getQuestions().size()) {
 										screenCaptureManager.endRecording();
 										thinkGearSocket.stop();
+
 										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
 											TriangulationManager.GetInscance().AddTriangulation(pair.getKey(), null, pair.getValue());
 										}
-										storeNeuroSkyData(thinkGearSocket.getEEGDataManager(), questionsIndex);
+										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(fileName, currentSubDir.getAbsolutePath());
+
 									
 										
 										setCurrentOutputDir();
@@ -177,16 +178,18 @@ public class ExperimentScreen {
 										storeExperimentData();
 										
 										thinkGearSocket.stop();
+
 										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
 											TriangulationManager.GetInscance().AddTriangulation(pair.getKey(), null, pair.getValue());
 										}
-										storeNeuroSkyData(thinkGearSocket.getEEGDataManager(), questionsIndex);
+										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(fileName, currentSubDir.getAbsolutePath());
 										for (Entry<Date, TriangaulationRaw> pair : (TriangulationManager.GetInscance()).getTriangalation().entrySet() ) {
 											if(pair.getValue().getEegRaw() != null && pair.getValue().getGazeData() != null) {
 												System.out.println(pair.getKey());
 												
 											}
 										}
+
 										try {
 											imageLabel.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/resources/tks.jpg"))));
 										} catch (IOException e1) {
@@ -289,58 +292,6 @@ public class ExperimentScreen {
 		
 	}
 	
-	private void storeNeuroSkyData(EEGDataManager eegDataManager, int questionId)
-	{
-		List<String> headers = new LinkedList<String>();
-		headers.add("Time stamp");
-		headers.add("Poor Signal Level");
-		headers.add("Blink Strength");
-		headers.add("Attention Level");
-		headers.add("Meditation Level");
-		headers.add("Delta");
-		headers.add("Theta");
-		headers.add("Low Alpha");
-		headers.add("High Alpha");
-		headers.add("Low Beta");
-		headers.add("High Beta");
-		headers.add("Low Gamma");
-		headers.add("Mid Beta");
-		
-		
-		List<List<String>> dataList = new LinkedList<>();
-		for (Entry<Date, EEGRaw> pair : eegDataManager.getEEGRawMap().entrySet()) {
-			List<String> data = new LinkedList<String>();
-			data.add(dateFormat.format(pair.getKey()));
-			EEGRaw raw = pair.getValue();
-			data.add(rawDataToString(pair.getValue().getPoorSignalLevel()));
-			data.add(rawDataToString(pair.getValue().getBlinkStrength()));
-			data.add(rawDataToString(pair.getValue().getAttentionLevel()));
-			data.add(rawDataToString(pair.getValue().getMeditationLevel()));
-			data.add(rawDataToString(pair.getValue().getDelta()));
-			data.add(rawDataToString(pair.getValue().getTheta()));
-			data.add(rawDataToString(pair.getValue().getLow_alpha()));
-			data.add(rawDataToString(pair.getValue().getHigh_alpha()));
-			data.add(rawDataToString(pair.getValue().getLow_beta()));
-			data.add(rawDataToString(pair.getValue().getHigh_beta()));
-			data.add(rawDataToString(pair.getValue().getLow_gamma()));
-			data.add(rawDataToString(pair.getValue().getMid_gamma()));
-			dataList.add(data);
-		 }
-		
-		
-		String csvPath = currentSubDir.getAbsolutePath();
-		String fileName = "Neuroskyoutput_"+questionId+".csv";
-		neuroskyCSVWritter = new ExprerimentCSVWritter(headers, dataList, csvPath, fileName);
-		neuroskyCSVWritter.WriteData();
-	}
-	
-	private String rawDataToString(Integer data)
-	{
-		if(data == null)
-			return "";
-		else
-			return data.toString();
-	}
 	
 	private void storeExperimentData()
 	{
@@ -353,8 +304,8 @@ public class ExperimentScreen {
 		headers.add("Total Score");
 		
 		List<String> data = new LinkedList<String>();
-		data.add(dateFormat.format(experiment.getStartDate().getTime()));
-		data.add(dateFormat.format(experiment.getEndDate().getTime()));
+		data.add(Constants.DATE_FORMATE.format(experiment.getStartDate().getTime()));
+		data.add(Constants.DATE_FORMATE.format(experiment.getEndDate().getTime()));
 		data.add(""+Constants.calulateDuration(experiment.getStartDate(), experiment.getEndDate()));
 		
 		data.add(experiment.getParticipant().getID());
@@ -375,10 +326,10 @@ public class ExperimentScreen {
 			data.add(questionScore);
 			
 			headers.add(headersQuestionSufix+" Start Date ");
-			data.add(dateFormat.format(experiment.getQuestions().get(i).getStartDate().getTime()));
+			data.add(Constants.DATE_FORMATE.format(experiment.getQuestions().get(i).getStartDate().getTime()));
 			
 			headers.add(headersQuestionSufix+" End Date");
-			data.add(dateFormat.format(experiment.getQuestions().get(i).getEndDate().getTime()));
+			data.add(Constants.DATE_FORMATE.format(experiment.getQuestions().get(i).getEndDate().getTime()));
 			
 			headers.add(headersQuestionSufix+" Time duration (s) ");
 			data.add(""+Constants.calulateDuration(experiment.getQuestions().get(i).getStartDate(), experiment.getQuestions().get(i).getEndDate()));
