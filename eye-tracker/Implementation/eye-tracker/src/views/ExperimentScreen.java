@@ -149,24 +149,19 @@ public class ExperimentScreen {
 									questionsIndex++;
 									if (questionsIndex < experiment.getQuestions().size()) {
 										screenCaptureManager.endRecording();
-										thinkGearSocket.stop();
+										thinkGearSocket.pause();
 
 										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
 											TriangulationManager.GetInscance().AddTriangulation(pair.getKey(), null, pair.getValue());
 										}
 										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(fileName, currentSubDir.getAbsolutePath());
-
+										thinkGearSocket.getEEGDataManager().getEEGRawMap().clear();
 									
 										
 										setCurrentOutputDir();
 										screenCaptureManager.startRecording();
-										thinkGearSocket = new ThinkGearSocket();
-										try {
-											thinkGearSocket.start();
-										} catch (ConnectException e1) {
-											System.out.print("Erro to start thinkGearSocket. Question Id "+questionsIndex);
-											e1.printStackTrace();
-										}
+										
+										thinkGearSocket.pause();
 										
 										setImage(questionsIndex);
 									} else {
@@ -183,6 +178,7 @@ public class ExperimentScreen {
 											TriangulationManager.GetInscance().AddTriangulation(pair.getKey(), null, pair.getValue());
 										}
 										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(fileName, currentSubDir.getAbsolutePath());
+										thinkGearSocket.getEEGDataManager().getEEGRawMap().clear();
 										for (Entry<Date, TriangaulationRaw> pair : (TriangulationManager.GetInscance()).getTriangalation().entrySet() ) {
 											if(pair.getValue().getEegRaw() != null && pair.getValue().getGazeData() != null) {
 												System.out.println(pair.getKey());

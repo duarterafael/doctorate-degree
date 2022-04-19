@@ -138,6 +138,7 @@ public class ThinkGearSocket implements Runnable {
 		System.out.println("Pause record data from neurosky");
 		this.running = !this.running;
 	}
+	
 
 	public void start() throws ConnectException {
 		System.out.println("Start conection neurosky");
@@ -292,7 +293,7 @@ public class ThinkGearSocket implements Runnable {
 
 	public void triggerAttentionAndMeditationEvent(Date timeStamp, int attentionLevel, int meditationLevel) {
 		System.out.println(
-				"timeStamp: " + Constants.DATE_FORMATE.format(timeStamp) + " attentionLevel " + attentionLevel);
+				"timeStamp: " + Constants.DATE_FORMATE.format(timeStamp) + " attentionLevel " + attentionLevel + " meditationLevel "+meditationLevel);
 		eegDataManager.AddEEGMap(EEGAction.E_SENSE, timeStamp, null, null, attentionLevel, meditationLevel, null, null,
 				null, null, null, null, null, null);
 
