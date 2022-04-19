@@ -45,9 +45,9 @@ import javax.swing.JFrame;
  
 public class BoxLayoutDemo {
     public static void addComponentsToPane(Container pane) {
-        pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
  
-        addAButton("Button 1", pane);
+        addAButton("Start", pane);
         addAButton("Button 2", pane);
         addAButton("Button 3", pane);
         addAButton("Long-Named Button 4", pane);

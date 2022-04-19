@@ -2,6 +2,14 @@ package neurosky.outpup;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+
+import Business.Constants;
+import Business.ExprerimentCSVWritter;
 
 public class EEGDataManager {
 	private HashMap<Date, EEGRaw> EEGRawMap;
@@ -73,5 +81,59 @@ public class EEGDataManager {
 		}
 		
 	}
+	
+	public void StoreNeuroSkyData(String fileName, String path)
+	{
+		List<String> headers = new LinkedList<String>();
+		headers.add("Time stamp");
+		headers.add("Poor Signal Level");
+		headers.add("Blink Strength");
+		headers.add("Attention Level");
+		headers.add("Meditation Level");
+		headers.add("Delta");
+		headers.add("Theta");
+		headers.add("Low Alpha");
+		headers.add("High Alpha");
+		headers.add("Low Beta");
+		headers.add("High Beta");
+		headers.add("Low Gamma");
+		headers.add("Mid Beta");
+		
+		
+		List<List<String>> dataList = new LinkedList<>();
+		Map<Date, EEGRaw> treeMap = new TreeMap<>(EEGRawMap);
+		for (Entry<Date, EEGRaw> pair : treeMap.entrySet()) {
+			List<String> data = new LinkedList<String>();
+			data.add(Constants.DATE_FORMATE.format(pair.getKey()));
+			EEGRaw raw = pair.getValue();
+			data.add(rawDataToString(raw.getPoorSignalLevel()));
+			data.add(rawDataToString(raw.getBlinkStrength()));
+			data.add(rawDataToString(raw.getAttentionLevel()));
+			data.add(rawDataToString(raw.getMeditationLevel()));
+			data.add(rawDataToString(raw.getDelta()));
+			data.add(rawDataToString(raw.getTheta()));
+			data.add(rawDataToString(raw.getLow_alpha()));
+			data.add(rawDataToString(raw.getHigh_alpha()));
+			data.add(rawDataToString(raw.getLow_beta()));
+			data.add(rawDataToString(raw.getHigh_beta()));
+			data.add(rawDataToString(raw.getLow_gamma()));
+			data.add(rawDataToString(raw.getMid_gamma()));
+			dataList.add(data);
+		 }
+		
+		
+		
+		ExprerimentCSVWritter neuroskyCSVWritter = new ExprerimentCSVWritter(headers, dataList, path, fileName);
+		neuroskyCSVWritter.WriteData();
+	}
+	
+	private static String rawDataToString(Integer data)
+	{
+		if(data == null)
+			return "";
+		else
+			return data.toString();
+	}
+	
 
 }
