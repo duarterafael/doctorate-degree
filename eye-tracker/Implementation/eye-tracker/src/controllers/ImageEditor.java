@@ -68,7 +68,7 @@ public class ImageEditor {
 		addCursor(img);
 
 		if (dc.hasAnyGazesInRange()) {
-			System.out.println(dc.getGazeHistory().size());
+			System.out.println(">>>"+dc.getGazeHistory().size());
 			markLatestGazes(img);
 
 			if (dc.atLeastTwoGazes())

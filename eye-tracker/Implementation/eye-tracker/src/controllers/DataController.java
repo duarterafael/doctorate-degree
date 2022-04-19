@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,9 @@ import com.theeyetribe.client.GazeManager.ApiVersion;
 import com.theeyetribe.client.GazeManager.ClientMode;
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.data.GazeData;
+
+import Business.triangulation.TriangaulationRaw;
+import Business.triangulation.TriangulationManager;
 
 public class DataController {
 
@@ -55,6 +59,20 @@ public class DataController {
 		@Override
 		public void onGazeUpdate(GazeData gazeData) {
 			if (recording) {
+//				System.out.println("__________________________________________________________");
+//				System.out.println("timeStampString "+gazeData.timeStampString);
+//				System.out.println("stateToString "+gazeData.stateToString());
+//				System.out.println("smoothedCoordinates.x "+gazeData.smoothedCoordinates.x);
+//				System.out.println("smoothedCoordinates.y "+gazeData.smoothedCoordinates.y);
+//				System.out.println("smoothedCoordinates.average() "+gazeData.smoothedCoordinates.average());
+//				System.out.println("isFixated "+ gazeData.isFixated);
+//				System.out.println("gazeData.leftEye.pupilSize "+ gazeData.leftEye.pupilSize);
+//				System.out.println("leftEye.smoothedCoordinates.x "+ gazeData.leftEye.smoothedCoordinates.x);
+//				System.out.println("gazeData.leftEye.smoothedCoordinates.y "+ gazeData.leftEye.smoothedCoordinates.y);
+//				System.out.println("stateToString "+ gazeData.rightEye.pupilSize);
+//				System.out.println("leftEye.smoothedCoordinates.x "+ gazeData.rightEye.smoothedCoordinates.x);
+//				System.out.println("gazeData.leftEye.smoothedCoordinates.y "+ gazeData.rightEye.smoothedCoordinates.y);
+				
 				saveData(gazeData);
 			}
 		}
@@ -75,9 +93,8 @@ public class DataController {
 		gazeHistory.add(gaze);
 		long endTime = System.nanoTime();
 
-		//System.out.println( (endTime - startTime) / 1000000);
-		System.out.println("Added: " + gaze.smoothedCoordinates.x + " "
-				+ gaze.smoothedCoordinates.y);
+		// System.out.println( (endTime - startTime) / 1000000);
+		System.out.println("Added: timeStamp: "+gaze.timeStamp+ " timeStampString: "+gaze.timeStampString+"  x = " + gaze.smoothedCoordinates.x + " y = "+ gaze.smoothedCoordinates.y);
 	}
 
 	boolean isLastFixated() {
@@ -191,9 +208,10 @@ public class DataController {
 	private void saveData(GazeData gazeData) {
 		boolean isLooking = isLooking(gazeData);
 		
-		if (isLooking)
+		if (isLooking) {
 			addGazeToHistory(gazeData);
-		else{
+			TriangulationManager.GetInscance().AddTriangulation(new Date(gazeData.timeStamp), gazeData, null);
+		}else{
 			gazeHistory.clear();
 			fixationStart =0;
 		}

@@ -329,46 +329,46 @@ public class ThinkGearSocket implements Runnable {
 //	      }
 //	    }
 //	  }	
+	  
+	  public void parsePacket(JSONObject data){
+			Iterator itr = data.keys(); 
+			while(itr.hasNext()) {
 
-	public void parsePacket(JSONObject data) {
-		Iterator itr = data.keys();
-		while (itr.hasNext()) {
-
-			Object e = itr.next();
-			String key = e.toString();
-
-			Date timeStamp = DateUtils.truncate(new Date(), Calendar.SECOND);
-
-			try {
-
-				if (key.matches("poorSignalLevel")) {
-					triggerPoorSignalEvent(timeStamp, data.getInt(e.toString()));
-
-				}
-				if (key.matches("rawEeg")) {
-					int rawValue = (Integer) data.get("rawEeg");
-					raw[index] = rawValue;
-					index++;
-					if (index == 512) {
-						index = 0;
-						int rawCopy[] = new int[512];
-						rawCopy = Arrays.copyOf(raw, raw.length);
-						// triggerRawEvent(rawCopy);
-					}
-				}
-				if (key.matches("blinkStrength")) {
-					triggerBlinkEvent(timeStamp, data.getInt(e.toString()));
-
-				}
-
-				if (key.matches("eSense")) {
-					JSONObject esense = data.getJSONObject("eSense");
-					triggerAttentionAndMeditationEvent(timeStamp, esense.getInt("attention"),
-							esense.getInt("meditation"));
-
-				}
-				if (key.matches("eegPower")) {
-					JSONObject eegPower = data.getJSONObject("eegPower");
+			    Object e = itr.next(); 
+			    String key = e.toString();
+			    
+			    Date timeStamp = DateUtils.truncate(new Date(), Calendar.MILLISECOND);
+			    
+			    
+			    try{
+			    	
+				    if(key.matches("poorSignalLevel")){
+				    	triggerPoorSignalEvent(timeStamp, data.getInt(e.toString()));
+				    	
+				    }
+				  if(key.matches("rawEeg")){
+				    	 int rawValue =  (Integer) data.get("rawEeg");
+				          raw[index] = rawValue;
+				          index++;
+				          if (index == 512) {
+				            index = 0;
+				            int rawCopy[] = new int[512];
+				            rawCopy = Arrays.copyOf(raw, raw.length);
+				           // triggerRawEvent(rawCopy);
+				          }
+				    }
+				    if(key.matches("blinkStrength")){
+				    	triggerBlinkEvent(timeStamp, data.getInt(e.toString()));
+				    	
+				    }  
+				    	
+				    if(key.matches("eSense")){
+				    	JSONObject esense = data.getJSONObject("eSense");
+				    	triggerAttentionAndMeditationEvent(timeStamp, esense.getInt("attention"), esense.getInt("meditation"));
+				    	
+				    }
+				    if(key.matches("eegPower")){
+				    	JSONObject eegPower = data.getJSONObject("eegPower");
 //				    	 System.out.println(">>>>delta "+eegPower.getDouble("delta"));
 //				    	 System.out.println(">>>>theta "+eegPower.getDouble("theta"));
 //				    	 System.out.println(">>>>lowAlpha "+eegPower.getDouble("lowAlpha"));
