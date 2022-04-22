@@ -34,6 +34,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import Business.Constants;
 import Business.Experiment;
 import Business.ExprerimentCSVWritter;
@@ -145,17 +147,22 @@ public class ExperimentScreen {
 								if (questionsIndex < experiment.getQuestions().size()) {
 									
 									experiment.getQuestions().get(questionsIndex).setResponse(response.charAt(0));
-									String fileName = "Neuroskyoutput_"+questionsIndex+".csv";
+									String neuroskyFileName = "Neuroskyoutput_"+questionsIndex+".csv";
+									String triangulationFilename = "Triangulation_"+questionsIndex+".csv";
+									
 									questionsIndex++;
 									if (questionsIndex < experiment.getQuestions().size()) {
 										screenCaptureManager.endRecording();
 										thinkGearSocket.pause();
 
 										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
-											TriangulationManager.GetInscance().AddTriangulation(pair.getKey(), null, pair.getValue());
+											TriangulationManager.GetInscance().AddTriangulation(DateUtils.truncate(pair.getKey(), Calendar.MILLISECOND), null, pair.getValue());
 										}
-										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(fileName, currentSubDir.getAbsolutePath());
+										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(neuroskyFileName, currentSubDir.getAbsolutePath());
 										thinkGearSocket.getEEGDataManager().getEEGRawMap().clear();
+										
+										TriangulationManager.GetInscance().StoreTriangulatipm(triangulationFilename, currentSubDir.getAbsolutePath());
+										TriangulationManager.GetInscance().getTriangalation().clear();
 									
 										
 										setCurrentOutputDir();
@@ -175,17 +182,14 @@ public class ExperimentScreen {
 										thinkGearSocket.stop();
 
 										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
-											TriangulationManager.GetInscance().AddTriangulation(pair.getKey(), null, pair.getValue());
+											TriangulationManager.GetInscance().AddTriangulation(DateUtils.truncate(pair.getKey(), Calendar.MILLISECOND), null, pair.getValue());
 										}
-										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(fileName, currentSubDir.getAbsolutePath());
+										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(neuroskyFileName, currentSubDir.getAbsolutePath());
 										thinkGearSocket.getEEGDataManager().getEEGRawMap().clear();
-										for (Entry<Date, TriangaulationRaw> pair : (TriangulationManager.GetInscance()).getTriangalation().entrySet() ) {
-											if(pair.getValue().getEegRaw() != null && pair.getValue().getGazeData() != null) {
-												System.out.println(pair.getKey());
-												
-											}
-										}
-
+										
+										
+										TriangulationManager.GetInscance().StoreTriangulatipm(triangulationFilename, currentSubDir.getAbsolutePath());
+										TriangulationManager.GetInscance().getTriangalation().clear();
 										try {
 											imageLabel.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/resources/tks.jpg"))));
 										} catch (IOException e1) {

@@ -82,6 +82,7 @@ public class EEGDataManager {
 		
 	}
 	
+	
 	public void StoreNeuroSkyData(String fileName, String path)
 	{
 		List<String> headers = new LinkedList<String>();
@@ -97,7 +98,7 @@ public class EEGDataManager {
 		headers.add("Low Beta");
 		headers.add("High Beta");
 		headers.add("Low Gamma");
-		headers.add("Mid Beta");
+		headers.add("High Beta");
 		
 		
 		List<List<String>> dataList = new LinkedList<>();
@@ -127,7 +128,7 @@ public class EEGDataManager {
 		neuroskyCSVWritter.WriteData();
 	}
 	
-	private static String rawDataToString(Integer data)
+	public static String rawDataToString(Integer data)
 	{
 		if(data == null)
 			return "";

@@ -3,6 +3,9 @@ package Business;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 public class Constants {
 	public final static String BASE_PATH = "/resources/questions/";
@@ -21,6 +24,15 @@ public class Constants {
 	     // seconds, minutes, hours, years,
 	     // and days
 //	     return difference_In_Time / 1000;
+	}
+	
+	public static String getTimeStamp(Date date)
+	{
+		DateFormat dateFormate = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+		String newDate = dateFormate.format(date);
+	    System.out.println("++++++++++++++++++++++++++++"+newDate);
+	    return newDate;
+		
 	}
 	
 	

@@ -340,7 +340,6 @@ public class ThinkGearSocket implements Runnable {
 			    
 			    Date timeStamp = DateUtils.truncate(new Date(), Calendar.MILLISECOND);
 			    
-			    
 			    try{
 			    	
 				    if(key.matches("poorSignalLevel")){

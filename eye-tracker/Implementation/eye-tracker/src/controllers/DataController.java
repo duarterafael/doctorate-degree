@@ -149,7 +149,7 @@ public class DataController {
 		return gazeHistory.size() >= 2;
 	}
 
-	long lastFixationLength() {
+	public long lastFixationLength() {
 		GazeData last = getLatest();
 		if (last != null&& last.isFixated && fixationStart != 0)
 			return last.timeStamp - fixationStart;
