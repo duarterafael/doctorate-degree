@@ -71,7 +71,7 @@ public class DataController {
 //				System.out.println("gazeData.leftEye.smoothedCoordinates.y "+ gazeData.leftEye.smoothedCoordinates.y);
 //				System.out.println("stateToString "+ gazeData.rightEye.pupilSize);
 //				System.out.println("leftEye.smoothedCoordinates.x "+ gazeData.rightEye.smoothedCoordinates.x);
-//				System.out.println("gazeData.leftEye.smoothedCoordinates.y "+ gazeData.rightEye.smoothedCoordinates.y);
+//				System.out.println("gazeData.leftEye.smoothedCoordinates.y "+ gazeData.rigopiopiiiiiihtEye.smoothedCoordinates.y);
 				
 				saveData(gazeData);
 			}

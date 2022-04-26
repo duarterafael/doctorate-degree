@@ -5,6 +5,7 @@ package samples;
 */
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.*;
@@ -53,6 +54,8 @@ public class KeyEventDemo extends JFrame
     private static void createAndShowGUI() {
         //Create and set up the window.
         KeyEventDemo frame = new KeyEventDemo("KeyEventDemo");
+        frame.setUndecorated(true);
+        frame.setBackground(new Color(1.0f,1.0f,1.0f,0.5f));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Set up the content pane.
@@ -78,7 +81,7 @@ public class KeyEventDemo extends JFrame
         //If you uncomment the following line of code, this
         //disables focus traversal and the Tab events will
         //become available to the key event listener.
-        //typingArea.setFocusTraversalKeysEnabled(false);
+        typingArea.setFocusTraversalKeysEnabled(false);
 
         displayArea = new JTextArea();
         displayArea.setEditable(false);
