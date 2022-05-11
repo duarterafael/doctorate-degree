@@ -13,6 +13,7 @@ public class Constants {
 	public final static int qtyQuestions = 16;
 	public final static String BASE_OUTPUT_PATH = "output\\";
 	public final static DateFormat DATE_FORMATE = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+	public final static DateFormat DATE_FORMATE2 = new SimpleDateFormat("yyyy MM dd HH'h'mm'm'ss's'");
 	
 	public static long calulateDuration (Calendar startDate, Calendar endDate)
 	{

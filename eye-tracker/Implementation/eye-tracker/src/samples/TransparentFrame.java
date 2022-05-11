@@ -39,8 +39,8 @@ import Business.ExprerimentCSVWritter;
 public class TransparentFrame extends JFrame {
 
 	private JPanel contentPane;
-	public static final int WIDTH_SCREEN = 1366;
-	public static final int HEIGHT_SCREEN = 768;
+	public static final int WIDTH_SCREEN = 1920;
+	public static final int HEIGHT_SCREEN = 1080;
 	private static final Color BG_COLOR_SCREEN = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 	/**
 	 * Launch the application.
@@ -454,7 +454,7 @@ public class TransparentFrame extends JFrame {
 				List<String> data = new LinkedList<String>();
 				data.add(item.getKey());
 				for (Point point : item.getValue()) {
-					data.add(point.x + "|"+point.y);
+					data.add(point.x + ","+point.y);
 				}
 				dataList.add(data);
 			}

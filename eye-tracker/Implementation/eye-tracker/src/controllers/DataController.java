@@ -1,11 +1,14 @@
 package controllers;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -18,6 +21,7 @@ import com.theeyetribe.client.GazeManager.ClientMode;
 import com.theeyetribe.client.IGazeListener;
 import com.theeyetribe.client.data.GazeData;
 
+import Business.triangulation.AreaOfInterest;
 import Business.triangulation.TriangaulationRaw;
 import Business.triangulation.TriangulationManager;
 
@@ -28,12 +32,27 @@ public class DataController {
 	private static final int MARGIN = 15;
 
 	private List<GazeData> gazeHistory;
+	private File file;
 	private FileWriter outputFileWriter;
 	private boolean recording;
+
+	private List<AreaOfInterest> targetAIOList;
 
 	private long fixationStart;
 
 	private KeyLogger keyLogger;
+	
+	public static final List<Color> colorList = new LinkedList<Color>() {
+		{
+			add(Color.RED);
+			add(Color.GREEN);
+			add(Color.BLUE);
+			add(Color.ORANGE);
+			add(Color.PINK);
+			add(Color.YELLOW);
+			add(Color.LIGHT_GRAY);
+		}
+	};
 
 	public DataController() {
 		final GazeManager gm = GazeManager.getInstance();
@@ -72,15 +91,14 @@ public class DataController {
 //				System.out.println("stateToString "+ gazeData.rightEye.pupilSize);
 //				System.out.println("leftEye.smoothedCoordinates.x "+ gazeData.rightEye.smoothedCoordinates.x);
 //				System.out.println("gazeData.leftEye.smoothedCoordinates.y "+ gazeData.rigopiopiiiiiihtEye.smoothedCoordinates.y);
-				
+
 				saveData(gazeData);
 			}
 		}
 	}
 
 	private void addGazeToHistory(GazeData gaze) {
-		
-		
+
 		if (gazeHistory.size() == GAZES_NUMBER) {
 			if (!gaze.isFixated || nearTheLastFixated(gaze)) {
 				gazeHistory.remove(gazeHistory.size() - 1);
@@ -94,7 +112,8 @@ public class DataController {
 		long endTime = System.nanoTime();
 
 		// System.out.println( (endTime - startTime) / 1000000);
-		System.out.println("Added: timeStamp: "+gaze.timeStamp+ " timeStampString: "+gaze.timeStampString+"  x = " + gaze.smoothedCoordinates.x + " y = "+ gaze.smoothedCoordinates.y);
+		System.out.println("Added: timeStamp: " + gaze.timeStamp + " timeStampString: " + gaze.timeStampString
+				+ "  x = " + gaze.smoothedCoordinates.x + " y = " + gaze.smoothedCoordinates.y);
 	}
 
 	boolean isLastFixated() {
@@ -110,8 +129,7 @@ public class DataController {
 	private boolean nearTheLastFixated(GazeData gaze) {
 		if (gazeHistory.size() > 2) {
 			GazeData last = gazeHistory.get(gazeHistory.size() - 2);
-			return Point.distance(last.smoothedCoordinates.x,
-					last.smoothedCoordinates.y, gaze.smoothedCoordinates.x,
+			return Point.distance(last.smoothedCoordinates.x, last.smoothedCoordinates.y, gaze.smoothedCoordinates.x,
 					gaze.smoothedCoordinates.y) <= MIN_DISTANCE;
 		} else
 			return false;
@@ -120,9 +138,8 @@ public class DataController {
 	private boolean isLooking(GazeData gaze) {
 		return gaze != null
 				&& isInWidthRange(gaze.smoothedCoordinates.x, MARGIN)
-				& isInHeightRange(gaze.smoothedCoordinates.y, MARGIN)
-				&& gaze.smoothedCoordinates.x != 0
-				&& gaze.smoothedCoordinates.y != 0;
+						& isInHeightRange(gaze.smoothedCoordinates.y, MARGIN)
+				&& gaze.smoothedCoordinates.x != 0 && gaze.smoothedCoordinates.y != 0;
 	}
 
 	boolean isInWidthRange(double x) {
@@ -151,9 +168,9 @@ public class DataController {
 
 	public long lastFixationLength() {
 		GazeData last = getLatest();
-		if (last != null&& last.isFixated && fixationStart != 0)
+		if (last != null && last.isFixated && fixationStart != 0)
 			return last.timeStamp - fixationStart;
-		 else
+		else
 			return 0;
 	}
 
@@ -161,11 +178,11 @@ public class DataController {
 		return !getGazeHistory().isEmpty();
 	}
 
-	List<GazeData> getGazeHistory() {
+	public List<GazeData> getGazeHistory() {
 		return gazeHistory;
 	}
 
-	Dimension getScreenSize() {
+	public static Dimension getScreenSize() {
 		return Toolkit.getDefaultToolkit().getScreenSize();
 	}
 
@@ -176,9 +193,14 @@ public class DataController {
 	public void startRecording(String filename) {
 		keyLogger.startRecording();
 		try {
-			outputFileWriter = new FileWriter(filename + ".csv");
+			file = new File(filename + ".csv");
+			outputFileWriter = new FileWriter(file);
 
 			outputFileWriter.append("Time Stamp");
+			outputFileWriter.append(';');
+			outputFileWriter.append("smoothedCoordinates.x");
+			outputFileWriter.append(';');
+			outputFileWriter.append("smoothedCoordinates.y");
 			outputFileWriter.append(';');
 			outputFileWriter.append("x");
 			outputFileWriter.append(';');
@@ -196,7 +218,8 @@ public class DataController {
 			outputFileWriter.append(';');
 			outputFileWriter.append("Right Pupil Diameter");
 			outputFileWriter.append(';');
-			
+			outputFileWriter.append("AOI Mathcs");
+
 			outputFileWriter.append('\n');
 
 			recording = true;
@@ -205,30 +228,61 @@ public class DataController {
 		}
 	}
 
+	private List<AreaOfInterest> getListAOI(GazeData gazeData) {
+		List<AreaOfInterest> mathAIOs = new LinkedList<>();
+		if (targetAIOList != null) {
+			for (AreaOfInterest AOI : targetAIOList) {
+				int x = (int) calcualteX(gazeData.smoothedCoordinates.x);
+				int y = (int) calcualteY(gazeData.smoothedCoordinates.y);
+				
+				if (AOI.buildPolygon().contains(new Point(x , y))) {
+					mathAIOs.add(AOI);
+				}
+			}
+		}
+		return mathAIOs;
+	}
+	
+	private double calcualteX(double x) {
+		if (isInWidthRange(x))
+			return x;
+
+		return x < 0 ? 0 : getScreenSize().getWidth();
+	}
+
+	private double calcualteY(double y) {
+		if (isInHeightRange(y))
+			return y;
+
+		return y < 0 ? 0 : getScreenSize().getHeight();
+	}
+
 	private void saveData(GazeData gazeData) {
 		boolean isLooking = isLooking(gazeData);
-		
+		List<AreaOfInterest> mathAIOs = getListAOI(gazeData);
+
 		if (isLooking) {
 			addGazeToHistory(gazeData);
-			TriangulationManager.GetInscance().AddTriangulation(new Date(gazeData.timeStamp), gazeData, null);
-		}else{
+
+			TriangulationManager.GetInscance().AddTriangulation(new Date(gazeData.timeStamp), gazeData, null, mathAIOs);
+		} else {
 			gazeHistory.clear();
-			fixationStart =0;
+			fixationStart = 0;
 		}
 		try {
 			outputFileWriter.append(gazeData.timeStampString);
 			outputFileWriter.append(';');
-			outputFileWriter.append(Double
-					.toString(gazeData.smoothedCoordinates.x));
+			outputFileWriter.append(Double.toString(gazeData.smoothedCoordinates.x));
 			outputFileWriter.append(';');
-			outputFileWriter.append(Double
-					.toString(gazeData.smoothedCoordinates.y));
+			outputFileWriter.append(Double.toString(gazeData.smoothedCoordinates.y));
 			outputFileWriter.append(';');
-			outputFileWriter.append(Integer.toString(MouseInfo.getPointerInfo()
-					.getLocation().x));
+			outputFileWriter.append(Integer.toString((int)calcualteX(gazeData.smoothedCoordinates.x)));
 			outputFileWriter.append(';');
-			outputFileWriter.append(Integer.toString(MouseInfo.getPointerInfo()
-					.getLocation().y));
+			outputFileWriter.append(Integer.toString((int)calcualteY(gazeData.smoothedCoordinates.y)));
+			outputFileWriter.append(';');
+			outputFileWriter.append(Integer.toString(MouseInfo.getPointerInfo().getLocation().x));
+			outputFileWriter.append(';');
+			outputFileWriter.append(Integer.toString(MouseInfo.getPointerInfo().getLocation().y));
 			outputFileWriter.append(';');
 			outputFileWriter.append(lastFixationLength() + "");
 			outputFileWriter.append(';');
@@ -236,9 +290,12 @@ public class DataController {
 			outputFileWriter.append(';');
 			outputFileWriter.append("" + gazeData.leftEye.pupilSize);
 			outputFileWriter.append(';');
-			outputFileWriter.append("" + gazeData.rightEye.pupilSize);
-			outputFileWriter.append(';');
 			saveKeyLoggerData();
+			String stringMathAIOs = "";
+			for (AreaOfInterest item : mathAIOs) {
+				stringMathAIOs += item.getID()+" ";
+			}
+			outputFileWriter.append(stringMathAIOs);
 			outputFileWriter.append('\n');
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -273,6 +330,8 @@ public class DataController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println(file.getAbsolutePath());
 	}
 
 	public void pauseRecording() {
@@ -283,4 +342,15 @@ public class DataController {
 			keyLogger.endRecording();
 		}
 	}
+
+	public List<AreaOfInterest> getTargetAIOList() {
+		return targetAIOList;
+	}
+
+	public void setTargetAIOList(List<AreaOfInterest> targetAIOList) {
+		this.targetAIOList = targetAIOList;
+	}
+	
+	
+
 }

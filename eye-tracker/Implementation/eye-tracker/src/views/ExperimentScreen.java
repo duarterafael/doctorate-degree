@@ -51,7 +51,14 @@ import neurosky.outpup.EEGRaw;
 
 public class ExperimentScreen {
 
-	private static final List<String> validResponses=new LinkedList<String>(){{add("A");add("B");add("C");add("D");}};
+	private static final List<String> validResponses = new LinkedList<String>() {
+		{
+			add("A");
+			add("B");
+			add("C");
+			add("D");
+		}
+	};
 
 	private static final long serialVersionUID = 1L;
 	public static JFrame frame;
@@ -64,12 +71,13 @@ public class ExperimentScreen {
 	private ExprerimentCSVWritter exprerimentCSVWritter;
 	private File rootFile = null;
 	private String exemperimentDataTime = ScreenCaptureManager.getCurrentTime();
-	
+	private static final boolean RECORD_MODE = true;
+
 	private File currentSubDir;
 	private ThinkGearSocket thinkGearSocket;
 
 	public ExperimentScreen() {
-		
+
 		DataController gc = new DataController();
 		MovieController mc = new MovieController();
 		screenCaptureManager = new ScreenCaptureManager(gc, mc);
@@ -105,11 +113,11 @@ public class ExperimentScreen {
 		JComboBox comboBoxmodelTypes = new JComboBox(modelTypes);
 		comboBoxmodelTypes.setFont(font1);
 
-		//comboBoxmodelTypes.setSelectedIndex(1); // REMOVER THIS
-		//textParticipantId.setText("Rafael Duarte");// REMOVE THIS
+		// comboBoxmodelTypes.setSelectedIndex(1); // REMOVER THIS
+		// textParticipantId.setText("Rafael Duarte");// REMOVE THIS
 
 		JButton buttonLogin = new JButton("Start");
-		
+
 		buttonLogin.addActionListener(new ActionListener() {
 
 			@Override
@@ -121,14 +129,17 @@ public class ExperimentScreen {
 					JOptionPane.showMessageDialog(frame, "Please select a model type", "Error message",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
-					screenCaptureManager.workingDirectory = Constants.BASE_OUTPUT_PATH+textParticipantId.getText()+ "_" + comboBoxmodelTypes.getSelectedItem().toString()+"\\"+exemperimentDataTime;
+					screenCaptureManager.workingDirectory = Constants.BASE_OUTPUT_PATH + textParticipantId.getText()
+							+ "_" + comboBoxmodelTypes.getSelectedItem().toString() + "\\" + exemperimentDataTime;
 					rootFile = new File(screenCaptureManager.workingDirectory);
 					rootFile.mkdirs();
-					
-					experiment = new Experiment(ModelType.getByDescription(comboBoxmodelTypes.getSelectedItem().toString()), textParticipantId.getText());
-					
+
+					experiment = new Experiment(
+							ModelType.getByDescription(comboBoxmodelTypes.getSelectedItem().toString()),
+							textParticipantId.getText());
+
 					firstPanel.setVisible(false);
-					
+
 					KeyListener listener = new KeyListener() {
 						@Override
 						public void keyTyped(KeyEvent e) {
@@ -136,88 +147,109 @@ public class ExperimentScreen {
 
 						@Override
 						public void keyPressed(KeyEvent e) {
-							
+
 						}
 
 						@Override
 						public void keyReleased(KeyEvent e) {
 							String response = KeyEvent.getKeyText(e.getKeyCode()).toUpperCase();
-							System.out.println(">>>>>>>>>>>>>>"+response);
+							System.out.println(">>>>>>>>>>>>>>" + response);
 							if (validResponses.contains(response)) {
 								if (questionsIndex < experiment.getQuestions().size()) {
-									
+
 									experiment.getQuestions().get(questionsIndex).setResponse(response.charAt(0));
-									String neuroskyFileName = "Neuroskyoutput_"+questionsIndex+".csv";
-									String triangulationFilename = "Triangulation_"+questionsIndex+".csv";
-									
+									String neuroskyFileName = "Neuroskyoutput_" + questionsIndex + ".csv";
+									String triangulationFilename = "Triangulation_" + questionsIndex + ".csv";
+
 									questionsIndex++;
 									if (questionsIndex < experiment.getQuestions().size()) {
-										screenCaptureManager.endRecording();
-										thinkGearSocket.pause();
+										if (RECORD_MODE) {
+											screenCaptureManager.endRecording();
+											thinkGearSocket.pause();
 
-										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
-											TriangulationManager.GetInscance().AddTriangulation(DateUtils.truncate(pair.getKey(), Calendar.MILLISECOND), null, pair.getValue());
+											for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager()
+													.getEEGRawMap().entrySet()) {
+												TriangulationManager.GetInscance().AddTriangulation(
+														DateUtils.truncate(pair.getKey(), Calendar.MILLISECOND), null,
+														pair.getValue(), null);
+											}
+											thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(neuroskyFileName,
+													currentSubDir.getAbsolutePath());
+											thinkGearSocket.getEEGDataManager().getEEGRawMap().clear();
+
+											TriangulationManager.GetInscance().StoreTriangulatipm(triangulationFilename,
+													currentSubDir.getAbsolutePath());
+											TriangulationManager.GetInscance().getTriangalation().clear();
+
+											setCurrentOutputDir();
+
+											screenCaptureManager.getGazeController().setTargetAIOList(
+													experiment.getQuestions().get(questionsIndex).getTargetAIOList());
+											screenCaptureManager.startRecording();
+
+											thinkGearSocket.pause();
 										}
-										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(neuroskyFileName, currentSubDir.getAbsolutePath());
-										thinkGearSocket.getEEGDataManager().getEEGRawMap().clear();
-										
-										TriangulationManager.GetInscance().StoreTriangulatipm(triangulationFilename, currentSubDir.getAbsolutePath());
-										TriangulationManager.GetInscance().getTriangalation().clear();
-									
-										
-										setCurrentOutputDir();
-										screenCaptureManager.startRecording();
-										
-										thinkGearSocket.pause();
-										
 										setImage(questionsIndex);
 									} else {
 										experiment.setEndDate(Calendar.getInstance());
-										experiment.getQuestions().get(questionsIndex-1).setEndDate(experiment.getEndDate());
-										experiment.getQuestions().get(questionsIndex-1).setResponse(response.charAt(0));
-										
-										screenCaptureManager.endRecording();
-										storeExperimentData();
-										
-										thinkGearSocket.stop();
+										experiment.getQuestions().get(questionsIndex - 1)
+												.setEndDate(experiment.getEndDate());
+										experiment.getQuestions().get(questionsIndex - 1)
+												.setResponse(response.charAt(0));
+										if (RECORD_MODE) {
+											screenCaptureManager.endRecording();
+											storeExperimentData();
 
-										for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager().getEEGRawMap().entrySet()) {
-											TriangulationManager.GetInscance().AddTriangulation(DateUtils.truncate(pair.getKey(), Calendar.MILLISECOND), null, pair.getValue());
+											thinkGearSocket.stop();
+
+											for (Entry<Date, EEGRaw> pair : thinkGearSocket.getEEGDataManager()
+													.getEEGRawMap().entrySet()) {
+												TriangulationManager.GetInscance().AddTriangulation(
+														DateUtils.truncate(pair.getKey(), Calendar.MILLISECOND), null,
+														pair.getValue(), null);
+											}
+											thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(neuroskyFileName,
+													currentSubDir.getAbsolutePath());
+											thinkGearSocket.getEEGDataManager().getEEGRawMap().clear();
+
+											TriangulationManager.GetInscance().StoreTriangulatipm(triangulationFilename,
+													currentSubDir.getAbsolutePath());
+											TriangulationManager.GetInscance().getTriangalation().clear();
 										}
-										thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(neuroskyFileName, currentSubDir.getAbsolutePath());
-										thinkGearSocket.getEEGDataManager().getEEGRawMap().clear();
-										
-										
-										TriangulationManager.GetInscance().StoreTriangulatipm(triangulationFilename, currentSubDir.getAbsolutePath());
-										TriangulationManager.GetInscance().getTriangalation().clear();
 										try {
-											imageLabel.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/resources/tks.jpg"))));
+											imageLabel.setIcon(new ImageIcon(
+													ImageIO.read(getClass().getResource("/resources/tks.jpg"))));
 										} catch (IOException e1) {
 											// TODO Auto-generated catch block
 											e1.printStackTrace();
 										}
-									    
+
 									}
 
 								}
 							}
 						}
 					};
-					
+
 					frame.addKeyListener(listener);
 					frame.setFocusable(true);
-					
+
 					setCurrentOutputDir();
-					screenCaptureManager.startRecording();
-					thinkGearSocket = new ThinkGearSocket();
-					try {
-						thinkGearSocket.start();
-					} catch (ConnectException e1) {
-						System.out.print("Erro to start thinkGearSocket. Question Id "+questionsIndex);
-						e1.printStackTrace();
+					if (RECORD_MODE) {
+						screenCaptureManager.getGazeController()
+								.setTargetAIOList(experiment.getQuestions().get(questionsIndex).getTargetAIOList());
+
+						screenCaptureManager.startRecording();
+						thinkGearSocket = new ThinkGearSocket();
+						try {
+							thinkGearSocket.start();
+						} catch (ConnectException e1) {
+							System.out.print("Erro to start thinkGearSocket. Question Id " + questionsIndex);
+							e1.printStackTrace();
+						}
 					}
 					setImage(questionsIndex);
-					
+
 				}
 			}
 		});
@@ -255,16 +287,14 @@ public class ExperimentScreen {
 
 	private void setImage(int index) {
 		ImageIcon image = null;
-		if(index == 0)
-		{
+		if (index == 0) {
 			experiment.setStartDate(Calendar.getInstance());
 			experiment.getQuestions().get(index).setStartDate(experiment.getStartDate());
-		}else if(questionsIndex < experiment.getQuestions().size())
-		{
-			experiment.getQuestions().get((index-1)).setEndDate(Calendar.getInstance());
-			experiment.getQuestions().get(index).setStartDate(experiment.getQuestions().get((index-1)).getEndDate());
+		} else if (questionsIndex < experiment.getQuestions().size()) {
+			experiment.getQuestions().get((index - 1)).setEndDate(Calendar.getInstance());
+			experiment.getQuestions().get(index).setStartDate(experiment.getQuestions().get((index - 1)).getEndDate());
 		}
-		
+
 		try {
 			String path = experiment.getQuestions().get(index).getPaht();
 			image = new ImageIcon(ImageIO.read(getClass().getResource(path)));
@@ -275,26 +305,23 @@ public class ExperimentScreen {
 			frame.add(imageLabel, BorderLayout.CENTER);
 			frame.setFocusable(true);
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 	}
-	
-	private void setCurrentOutputDir()
-	{
-		String subDir = (questionsIndex+1)+"_"+ScreenCaptureManager.getCurrentTime();
-		currentSubDir = new File(rootFile.getAbsolutePath()+"\\"+subDir);
+
+	private void setCurrentOutputDir() {
+		String subDir = questionsIndex + "_" + ScreenCaptureManager.getCurrentTime();
+		currentSubDir = new File(rootFile.getAbsolutePath() + "\\" + subDir);
 		currentSubDir.mkdirs();
 		screenCaptureManager.workingDirectory = currentSubDir.getAbsolutePath();
 	}
 
 	public void secondPanel() {
-		
+
 	}
-	
-	
-	private void storeExperimentData()
-	{
+
+	private void storeExperimentData() {
 		List<String> headers = new LinkedList<String>();
 		headers.add("Start Date");
 		headers.add("End Date");
@@ -302,49 +329,50 @@ public class ExperimentScreen {
 		headers.add("Participant Id");
 		headers.add("Model Tyle");
 		headers.add("Total Score");
-		
+
 		List<String> data = new LinkedList<String>();
 		data.add(Constants.DATE_FORMATE.format(experiment.getStartDate().getTime()));
 		data.add(Constants.DATE_FORMATE.format(experiment.getEndDate().getTime()));
-		data.add(""+Constants.calulateDuration(experiment.getStartDate(), experiment.getEndDate()));
-		
+		data.add("" + Constants.calulateDuration(experiment.getStartDate(), experiment.getEndDate()));
+
 		data.add(experiment.getParticipant().getID());
 		data.add(experiment.getModelType().getdescription());
-		data.add(experiment.getScore()+"");
-		
-		for(int i = 0; i < Constants.qtyQuestions; i++) {
-			String headersQuestionSufix = "Q"+(i+1);
-			
-			headers.add(headersQuestionSufix+" Response");
+		data.add(experiment.getScore() + "");
+
+		for (int i = 0; i < Constants.qtyQuestions; i++) {
+			String headersQuestionSufix = "Q" + (i + 1);
+
+			headers.add(headersQuestionSufix + " Response");
 			data.add(experiment.getQuestions().get(i).getResponse().toString());
-			
-			headers.add(headersQuestionSufix+" Answer ");
+
+			headers.add(headersQuestionSufix + " Answer ");
 			data.add(experiment.getQuestions().get(i).getAnswer().toString());
-			
+
 			headers.add(headersQuestionSufix + " Score");
-			String questionScore = experiment.getQuestions().get(i).getResponse() == experiment.getQuestions().get(i).getAnswer() ? "1" : "0";
+			String questionScore = experiment.getQuestions().get(i).getResponse() == experiment.getQuestions().get(i)
+					.getAnswer() ? "1" : "0";
 			data.add(questionScore);
-			
-			headers.add(headersQuestionSufix+" Start Date ");
+
+			headers.add(headersQuestionSufix + " Start Date ");
 			data.add(Constants.DATE_FORMATE.format(experiment.getQuestions().get(i).getStartDate().getTime()));
-			
-			headers.add(headersQuestionSufix+" End Date");
+
+			headers.add(headersQuestionSufix + " End Date");
 			data.add(Constants.DATE_FORMATE.format(experiment.getQuestions().get(i).getEndDate().getTime()));
-			
-			headers.add(headersQuestionSufix+" Time duration (s) ");
-			data.add(""+Constants.calulateDuration(experiment.getQuestions().get(i).getStartDate(), experiment.getQuestions().get(i).getEndDate()));
-			
+
+			headers.add(headersQuestionSufix + " Time duration (ms) ");
+			data.add("" + Constants.calulateDuration(experiment.getQuestions().get(i).getStartDate(),
+					experiment.getQuestions().get(i).getEndDate()));
+
 		}
-		
+
 		headers.add("Output data");
 		data.add(rootFile.getAbsolutePath());
-		
+
 		List<List<String>> dataList = Arrays.asList(data);
 		String csvPath = rootFile.getParentFile().getParentFile().getAbsolutePath();
 		exprerimentCSVWritter = new ExprerimentCSVWritter(headers, dataList, csvPath, "Experimento.csv");
 		exprerimentCSVWritter.WriteData();
-				
+
 	}
-	
 
 }

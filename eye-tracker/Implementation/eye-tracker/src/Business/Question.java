@@ -1,6 +1,10 @@
 package Business;
 
+import java.awt.Polygon;
 import java.util.Calendar;
+import java.util.List;
+
+import Business.triangulation.AreaOfInterest;
 
 public class Question {
 	
@@ -10,14 +14,15 @@ public class Question {
 	private Character answer;
 	private Character response;
 	private Calendar startDate;
-	private Calendar endDate; 
+	private Calendar endDate;
+	private List<AreaOfInterest> targetAIOList;
+	
 	
 	public Question(String statement, String altenatives, Character answer) {
 		super();
 		this.statement = statement;
 		this.altenatives = altenatives;
 		this.answer = answer;
-		this.startDate = startDate;
 	}
 
 	public String getStatement() {
@@ -75,10 +80,14 @@ public class Question {
 	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
 	}
-	
-	
-	
-	
+
+	public List<AreaOfInterest> getTargetAIOList() {
+		return targetAIOList;
+	}
+
+	public void setTargetAIOList(List<AreaOfInterest> targetAIOList) {
+		this.targetAIOList = targetAIOList;
+	}
 	
 	
 }

@@ -6,10 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.MouseInfo;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import com.theeyetribe.client.data.GazeData;
+
+import Business.triangulation.AreaOfInterest;
 
 public class ImageEditor {
 
@@ -61,16 +64,30 @@ public class ImageEditor {
 		}
 
 	}
+	
+	public void drawAIO(BufferedImage img) {
+		Random rand = new Random();
+		if(dc.getTargetAIOList()!=null)
+		{
+			for(int i = 0; i < dc.getTargetAIOList().size(); i++) {
+				g2d.setColor(dc.colorList.get(i));
+				g2d.setStroke(new BasicStroke(pathStrokeWidth));
+				
+				g2d.drawPolygon(dc.getTargetAIOList().get(i).buildPolygon());
+			}
+		}
+	}
 
 	public void addCurrentEyePosition(BufferedImage img) {
 		g2d = img.createGraphics();
 
 		addCursor(img);
-
+		
+		drawAIO(img);
+		
 		if (dc.hasAnyGazesInRange()) {
 			System.out.println(">>>"+dc.getGazeHistory().size());
 			markLatestGazes(img);
-
 			if (dc.atLeastTwoGazes())
 				markSaccadesPaths();
 
@@ -103,6 +120,8 @@ public class ImageEditor {
 		x = calcualteX(x) - shift;
 		y = calcualteY(y) - shift;
 
+		System.out.println(">>>>>>>>>>>>>>("+(int) x+", "+(int) y+")");
+		
 		if (size <= maxDiameter)
 			g2d.drawOval((int) x, (int) y, size, size);
 		else

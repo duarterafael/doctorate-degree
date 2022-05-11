@@ -1,5 +1,7 @@
 package Business.triangulation;
 
+import java.util.List;
+
 import com.theeyetribe.client.data.GazeData;
 
 import neurosky.outpup.EEGRaw;
@@ -7,11 +9,13 @@ import neurosky.outpup.EEGRaw;
 public class TriangaulationRaw {
 	private GazeData gazeData;
 	private EEGRaw eegRaw;
+	private List<AreaOfInterest> AIOList;
 	
-	public TriangaulationRaw(GazeData gazeData, EEGRaw eegRaw) {
+	public TriangaulationRaw(GazeData gazeData, EEGRaw eegRaw, List<AreaOfInterest> AIOList) {
 		super();
 		this.gazeData = gazeData;
 		this.eegRaw = eegRaw;
+		this.AIOList = AIOList;
 	}
 	
 	public TriangaulationRaw(EEGRaw eegRaw) {
@@ -19,9 +23,10 @@ public class TriangaulationRaw {
 		this.eegRaw = eegRaw;
 	}
 	
-	public TriangaulationRaw(GazeData gazeData) {
+	public TriangaulationRaw(GazeData gazeData, List<AreaOfInterest> AIOList) {
 		super();
 		this.gazeData = gazeData;
+		this.AIOList = AIOList;
 	}
 	
 	public GazeData getGazeData() {
@@ -36,6 +41,16 @@ public class TriangaulationRaw {
 	public void setEegRaw(EEGRaw eegRaw) {
 		this.eegRaw = eegRaw;
 	}
+
+	public List<AreaOfInterest> getAIOList() {
+		return AIOList;
+	}
+
+	public void setAIOList(List<AreaOfInterest> aIOList) {
+		AIOList = aIOList;
+	}
+	
+	
 	
 	
 }

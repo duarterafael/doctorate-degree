@@ -1,8 +1,6 @@
 package Business.triangulation;
 
-import java.awt.MouseInfo;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +37,11 @@ public class TriangulationManager {
 	}
 	
 	
-	public void AddTriangulation(Date timeStamp,GazeData gazeData, EEGRaw eegRaw) {
+	public void AddTriangulation(Date timeStamp,GazeData gazeData, EEGRaw eegRaw, List<AreaOfInterest> AIOList) {
 		String truncateTimeStamp = Constants.getTimeStamp(timeStamp);
 		if(!triangalation.containsKey(truncateTimeStamp))
 		{
-			triangalation.put(truncateTimeStamp, new TriangaulationRaw(gazeData, eegRaw));
+			triangalation.put(truncateTimeStamp, new TriangaulationRaw(gazeData, eegRaw, AIOList));
 		}else 
 		{
 			TriangaulationRaw triangaulationRaw = triangalation.get(truncateTimeStamp);
@@ -64,6 +62,8 @@ public class TriangulationManager {
 		
 	}
 	
+	
+	
 
 	
 	public void StoreTriangulatipm(String fileName, String path)
@@ -77,6 +77,7 @@ public class TriangulationManager {
 		headers.add("is Fixated");
 		headers.add("Left Pupil Diameter");
 		headers.add("Right Pupil Diameter");
+		headers.add("AIO List");
 		
 		headers.add("Time Stamp Neurosky");
 		headers.add("Poor Signal Level");
@@ -107,8 +108,19 @@ public class TriangulationManager {
 				data.add(gazeDataRaw.isFixated+"");
 				data.add("" + gazeDataRaw.leftEye.pupilSize);
 				data.add("" + gazeDataRaw.rightEye.pupilSize);
+				String stringAIOList = "";
+				if(pair.getValue().getAIOList() != null)
+				{
+					for (AreaOfInterest item : pair.getValue().getAIOList()) {
+						stringAIOList += item.getID()+",";
+					}
+					
+				}
+				data.add(stringAIOList);
+				
 			}else
 			{
+				data.add("");
 				data.add("");
 				data.add("");
 				data.add("");

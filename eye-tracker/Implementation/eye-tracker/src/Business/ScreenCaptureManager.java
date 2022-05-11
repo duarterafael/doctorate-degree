@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -20,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Business.triangulation.AreaOfInterest;
 import controllers.DataController;
 import controllers.ImageEditor;
 import controllers.MovieController;
@@ -33,7 +35,7 @@ public class ScreenCaptureManager {
 	private DataController gazeController;
 	private MovieController movieController;
 	private ImageEditor imageEditor;
-
+	
 	private CaptureLoop captureLoop;
 	private boolean paused;
 	private long pauseStart;
@@ -105,8 +107,8 @@ public class ScreenCaptureManager {
 					movieController.startRecording(fileName);
 					gazeController.startRecording(fileName);
 				} else {
-					movieController.startRecording(workingDirectory + "\\_" + fileName);
-					gazeController.startRecording(workingDirectory + "\\_" + fileName);
+					movieController.startRecording(workingDirectory + "\\" + fileName);
+					gazeController.startRecording(workingDirectory + "\\" + fileName);
 				}
 
 			} else {
@@ -161,14 +163,24 @@ public class ScreenCaptureManager {
 				BufferedImage screenshot = captureScreen();
 				imageEditor.addCurrentEyePosition(screenshot);
 				
-//				try {
-//					File f = new File(pausedTime  + ".png");
-//					System.out.print(f.getAbsolutePath());
-//					ImageIO.write(screenshot, "png",f);
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+				try {
+					String path = getCurrentTime()+".png";
+					if(!gazeController.getGazeHistory().isEmpty())
+					{
+						path = Constants.DATE_FORMATE2.format(gazeController.getGazeHistory().get(gazeController.getGazeHistory().size()-1).timeStamp)+".png";
+					}
+					if(workingDirectory != null)
+					{
+						path = workingDirectory+"\\"+path;
+					}
+					File f = new File(path);
+					//System.out.println(f.getAbsolutePath());
+					ImageIO.write(screenshot, "png",f);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 
 				movieController.encodeImage(screenshot, pausedTime);
 			}
@@ -245,4 +257,12 @@ public class ScreenCaptureManager {
 		}
 	}
 
+	public DataController getGazeController() {
+		return gazeController;
+	}
+
+	public void setGazeController(DataController gazeController) {
+		this.gazeController = gazeController;
+	}
+	
 }
