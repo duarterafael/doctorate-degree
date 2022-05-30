@@ -233,7 +233,7 @@ public class ScreenCaptureController {
 					String path = getCurrentTime()+".png";
 					if(!gazeController.getGazeHistory().isEmpty())
 					{
-						path = Constants.DATE_FORMATE2.format(gazeController.getGazeHistory().get(gazeController.getGazeHistory().size()-1).timeStamp)+".png";
+						path = Constants.DATE_FORMATE3.format(gazeController.getGazeHistory().get(gazeController.getGazeHistory().size()-1).timeStamp)+".png";
 					}
 					File f = new File(path);
 					

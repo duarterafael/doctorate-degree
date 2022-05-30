@@ -210,13 +210,13 @@ public class Experiment {
 				'A');
 		questions.add(question14);
 
-		Question question15 = new Question(
-				"15)	Em quais momentos o processo pode ser interrompido/encerrado sem sucesso?",
-				"a)	Se a documentação estiver irregular.\r\n" + "b)	Após a notificação da data de avaliação.\r\n"
-						+ "c)	Após 30 dias sem resposta ou após sugerir os valores.\r\n"
-						+ "d)	Após a solicitação de avaliação.",
-				'C');
-		questions.add(question15);
+//		Question question15 = new Question(
+//				"15)	Em quais momentos o processo pode ser interrompido/encerrado sem sucesso?",
+//				"a)	Se a documentação estiver irregular.\r\n" + "b)	Após a notificação da data de avaliação.\r\n"
+//						+ "c)	Após 30 dias sem resposta ou após sugerir os valores.\r\n"
+//						+ "d)	Após a solicitação de avaliação.",
+//				'C');
+//		questions.add(question15);
 
 		for (int i = 0; i < Constants.qtyQuestions; i++) {
 			String path = Constants.BASE_PATH + modelType + "/" + modelType + "_" + i + Constants.FILE_EXTENSION;

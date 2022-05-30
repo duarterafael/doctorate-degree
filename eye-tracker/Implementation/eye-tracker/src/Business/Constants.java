@@ -10,10 +10,11 @@ import org.apache.commons.lang3.time.DateUtils;
 public class Constants {
 	public final static String BASE_PATH = "/resources/questions/";
 	public final static String FILE_EXTENSION = ".JPG";
-	public final static int qtyQuestions = 16;
+	public final static int qtyQuestions = 15;
 	public final static String BASE_OUTPUT_PATH = "output\\";
-	public final static DateFormat DATE_FORMATE = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.sss");
+	public final static DateFormat DATE_FORMATE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
 	public final static DateFormat DATE_FORMATE2 = new SimpleDateFormat("yyyy MM dd HH'h'mm'm'ss's'");
+	public final static DateFormat DATE_FORMATE3 = new SimpleDateFormat("HH_mm_ss");
 	
 	public static long calulateDuration (Calendar startDate, Calendar endDate)
 	{
@@ -29,9 +30,8 @@ public class Constants {
 	
 	public static String getTimeStamp(Date date)
 	{
-		DateFormat dateFormate = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+		DateFormat dateFormate = new SimpleDateFormat("HH:mm:ss");
 		String newDate = dateFormate.format(date);
-	    System.out.println("++++++++++++++++++++++++++++"+newDate);
 	    return newDate;
 		
 	}

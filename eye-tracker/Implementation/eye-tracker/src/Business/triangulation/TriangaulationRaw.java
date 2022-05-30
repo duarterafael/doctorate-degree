@@ -9,24 +9,17 @@ import neurosky.outpup.EEGRaw;
 public class TriangaulationRaw {
 	private GazeData gazeData;
 	private EEGRaw eegRaw;
+	private int calculateX;
+	private int calculateY;
 	private List<AreaOfInterest> AIOList;
 	
-	public TriangaulationRaw(GazeData gazeData, EEGRaw eegRaw, List<AreaOfInterest> AIOList) {
+	public TriangaulationRaw(GazeData gazeData, EEGRaw eegRaw, List<AreaOfInterest> AIOList, int calculateX, int calculateY) {
 		super();
 		this.gazeData = gazeData;
 		this.eegRaw = eegRaw;
 		this.AIOList = AIOList;
-	}
-	
-	public TriangaulationRaw(EEGRaw eegRaw) {
-		super();
-		this.eegRaw = eegRaw;
-	}
-	
-	public TriangaulationRaw(GazeData gazeData, List<AreaOfInterest> AIOList) {
-		super();
-		this.gazeData = gazeData;
-		this.AIOList = AIOList;
+		this.calculateX = calculateX;
+		this.calculateY = calculateY;
 	}
 	
 	public GazeData getGazeData() {
@@ -49,8 +42,22 @@ public class TriangaulationRaw {
 	public void setAIOList(List<AreaOfInterest> aIOList) {
 		AIOList = aIOList;
 	}
-	
-	
+
+	public int getCalculateX() {
+		return calculateX;
+	}
+
+	public void setCalculateX(int calculateX) {
+		this.calculateX = calculateX;
+	}
+
+	public int getCalculateY() {
+		return calculateY;
+	}
+
+	public void setCalculateY(int calculateY) {
+		this.calculateY = calculateY;
+	}
 	
 	
 }

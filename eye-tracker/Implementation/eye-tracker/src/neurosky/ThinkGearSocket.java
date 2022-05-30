@@ -277,15 +277,14 @@ public class ThinkGearSocket implements Runnable {
 
 	public void triggerPoorSignalEvent(Date timeStamp, int poorSignalLevel) {
 		System.out.println(
-				"timeStamp: " + Constants.DATE_FORMATE.format(timeStamp) + " poorSignalLevel " + poorSignalLevel);
+				"NEUROSKY: timeStamp: " + Constants.DATE_FORMATE.format(timeStamp) + " poorSignalLevel " + poorSignalLevel);
 		eegDataManager.AddEEGMap(EEGAction.POOR_SIGNAL_LEVEL, timeStamp, poorSignalLevel, null, null, null, null, null,
 				null, null, null, null, null, null);
 
 	}
 
 	public void triggerBlinkEvent(Date timeStamp, int blinkStrength) {
-		System.out
-				.println("timeStamp: " + Constants.DATE_FORMATE.format(timeStamp) + " blinkStrength " + blinkStrength);
+		System.out.println("NEUROSKY: timeStamp: " + Constants.DATE_FORMATE.format(timeStamp) + " blinkStrength " + blinkStrength);
 		eegDataManager.AddEEGMap(EEGAction.BLINK_STRENGTH, timeStamp, null, blinkStrength, null, null, null, null, null,
 				null, null, null, null, null);
 
@@ -293,7 +292,7 @@ public class ThinkGearSocket implements Runnable {
 
 	public void triggerAttentionAndMeditationEvent(Date timeStamp, int attentionLevel, int meditationLevel) {
 		System.out.println(
-				"timeStamp: " + Constants.DATE_FORMATE.format(timeStamp) + " attentionLevel " + attentionLevel + " meditationLevel "+meditationLevel);
+				"NEUROSKY: timeStamp: " + Constants.DATE_FORMATE.format(timeStamp) + " attentionLevel " + attentionLevel + " meditationLevel "+meditationLevel);
 		eegDataManager.AddEEGMap(EEGAction.E_SENSE, timeStamp, null, null, attentionLevel, meditationLevel, null, null,
 				null, null, null, null, null, null);
 
@@ -301,7 +300,7 @@ public class ThinkGearSocket implements Runnable {
 
 	public void triggerEEGEvent(Date timeStamp, int delta, int theta, int low_alpha, int high_alpha, int low_beta,
 			int high_beta, int low_gamma, int mid_gamma) {
-		System.out.println("timeStamp: " + Constants.DATE_FORMATE.format(timeStamp)
+		System.out.println("NEUROKY: timeStamp: " + Constants.DATE_FORMATE.format(timeStamp)
 		+" delta " + delta
 		+" theta " + theta
 		+" low_alpha " + low_alpha

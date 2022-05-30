@@ -35,10 +35,8 @@ public class ImageEditor {
 
 	private void loadResources() {
 		try {
-			cursor = ImageIO.read(getClass().getResource(
-					"/resources/cursor.png"));
-			cursorPressed = ImageIO.read(getClass().getResource(
-					"/resources/cursor2.png"));
+			cursor = ImageIO.read(getClass().getResource("/resources/cursor.png"));
+			cursorPressed = ImageIO.read(getClass().getResource("/resources/cursor2.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -64,15 +62,14 @@ public class ImageEditor {
 		}
 
 	}
-	
+
 	public void drawAIO(BufferedImage img) {
 		Random rand = new Random();
-		if(dc.getTargetAIOList()!=null)
-		{
-			for(int i = 0; i < dc.getTargetAIOList().size(); i++) {
+		if (dc.getTargetAIOList() != null) {
+			for (int i = 0; i < dc.getTargetAIOList().size(); i++) {
 				g2d.setColor(dc.colorList.get(i));
 				g2d.setStroke(new BasicStroke(pathStrokeWidth));
-				
+
 				g2d.drawPolygon(dc.getTargetAIOList().get(i).buildPolygon());
 			}
 		}
@@ -82,11 +79,11 @@ public class ImageEditor {
 		g2d = img.createGraphics();
 
 		addCursor(img);
-		
+
 		drawAIO(img);
-		
+
 		if (dc.hasAnyGazesInRange()) {
-			System.out.println(">>>"+dc.getGazeHistory().size());
+			// System.out.println(">>>"+dc.getGazeHistory().size());
 			markLatestGazes(img);
 			if (dc.atLeastTwoGazes())
 				markSaccadesPaths();
@@ -120,8 +117,8 @@ public class ImageEditor {
 		x = calcualteX(x) - shift;
 		y = calcualteY(y) - shift;
 
-		System.out.println(">>>>>>>>>>>>>>("+(int) x+", "+(int) y+")");
-		
+		// System.out.println(">>>>>>>>>>>>>>("+(int) x+", "+(int) y+")");
+
 		if (size <= maxDiameter)
 			g2d.drawOval((int) x, (int) y, size, size);
 		else
@@ -162,8 +159,7 @@ public class ImageEditor {
 	}
 
 	private int getFixationCircleGrowth() {
-		return Math.min(maxDiameter,
-				baseDiameter + (int) (dc.lastFixationLength() / 100));
+		return Math.min(maxDiameter, baseDiameter + (int) (dc.lastFixationLength() / 100));
 	}
 
 	private void setBorderOn(BufferedImage img) {

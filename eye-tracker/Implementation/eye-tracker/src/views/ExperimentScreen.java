@@ -158,8 +158,10 @@ public class ExperimentScreen {
 								if (questionsIndex < experiment.getQuestions().size()) {
 
 									experiment.getQuestions().get(questionsIndex).setResponse(response.charAt(0));
-									String neuroskyFileName = "Neuroskyoutput_" + questionsIndex + ".csv";
-									String triangulationFilename = "Triangulation_" + questionsIndex + ".csv";
+									//experiment.getParticipant().getID()+"_"+experiment.getModelType().getdescription()
+									String fileNameSufix = + questionsIndex + ".csv";
+									String neuroskyFileName = "Neuroskyoutput_" + fileNameSufix;
+									String triangulationFilename = "Triangulation_" + fileNameSufix;
 
 									questionsIndex++;
 									if (questionsIndex < experiment.getQuestions().size()) {
@@ -171,7 +173,7 @@ public class ExperimentScreen {
 													.getEEGRawMap().entrySet()) {
 												TriangulationManager.GetInscance().AddTriangulation(
 														DateUtils.truncate(pair.getKey(), Calendar.MILLISECOND), null,
-														pair.getValue(), null);
+														pair.getValue(), null, -1, -1);
 											}
 											thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(neuroskyFileName,
 													currentSubDir.getAbsolutePath());
@@ -206,7 +208,7 @@ public class ExperimentScreen {
 													.getEEGRawMap().entrySet()) {
 												TriangulationManager.GetInscance().AddTriangulation(
 														DateUtils.truncate(pair.getKey(), Calendar.MILLISECOND), null,
-														pair.getValue(), null);
+														pair.getValue(), null, -1, -1);
 											}
 											thinkGearSocket.getEEGDataManager().StoreNeuroSkyData(neuroskyFileName,
 													currentSubDir.getAbsolutePath());
@@ -325,7 +327,7 @@ public class ExperimentScreen {
 		List<String> headers = new LinkedList<String>();
 		headers.add("Start Date");
 		headers.add("End Date");
-		headers.add("Time duration (s)");
+		headers.add("Time duration (ms)");
 		headers.add("Participant Id");
 		headers.add("Model Tyle");
 		headers.add("Total Score");

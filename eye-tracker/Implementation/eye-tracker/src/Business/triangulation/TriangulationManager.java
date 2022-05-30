@@ -1,5 +1,7 @@
 package Business.triangulation;
 
+import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,11 +39,11 @@ public class TriangulationManager {
 	}
 	
 	
-	public void AddTriangulation(Date timeStamp,GazeData gazeData, EEGRaw eegRaw, List<AreaOfInterest> AIOList) {
+	public void AddTriangulation(Date timeStamp,GazeData gazeData, EEGRaw eegRaw, List<AreaOfInterest> AIOList, int calculateX, int calculateY) {
 		String truncateTimeStamp = Constants.getTimeStamp(timeStamp);
 		if(!triangalation.containsKey(truncateTimeStamp))
 		{
-			triangalation.put(truncateTimeStamp, new TriangaulationRaw(gazeData, eegRaw, AIOList));
+			triangalation.put(truncateTimeStamp, new TriangaulationRaw(gazeData, eegRaw, AIOList, calculateX, calculateY));
 		}else 
 		{
 			TriangaulationRaw triangaulationRaw = triangalation.get(truncateTimeStamp);
@@ -72,6 +74,8 @@ public class TriangulationManager {
 		headers.add("Key");
 		
 		headers.add("Time Stamp Eye tracking");
+		headers.add("smoothedCoordinates.x");
+		headers.add("smoothedCoordinates.y");
 		headers.add("x");
 		headers.add("y");
 		headers.add("is Fixated");
@@ -92,11 +96,11 @@ public class TriangulationManager {
 		headers.add("High Beta");
 		headers.add("Low Gamma");
 		headers.add("High Beta");
+		headers.add("Image");
 		
 		
 		List<List<String>> dataList = new LinkedList<>();
-		Map<String, TriangaulationRaw> treeMap = new TreeMap<>(triangalation);
-		for (Entry<String, TriangaulationRaw> pair : treeMap.entrySet()) {
+		for (Entry<String, TriangaulationRaw> pair : triangalation.entrySet()) {
 			List<String> data = new LinkedList<String>();
 			data.add(pair.getKey());
 			GazeData gazeDataRaw = pair.getValue().getGazeData();
@@ -105,6 +109,8 @@ public class TriangulationManager {
 				data.add(gazeDataRaw.timeStampString);
 				data.add(Double.toString(gazeDataRaw.smoothedCoordinates.x));
 				data.add(Double.toString(gazeDataRaw.smoothedCoordinates.y));
+				data.add(Integer.toString(pair.getValue().getCalculateX()));
+				data.add(Integer.toString(pair.getValue().getCalculateY()));
 				data.add(gazeDataRaw.isFixated+"");
 				data.add("" + gazeDataRaw.leftEye.pupilSize);
 				data.add("" + gazeDataRaw.rightEye.pupilSize);
@@ -120,6 +126,8 @@ public class TriangulationManager {
 				
 			}else
 			{
+				data.add("");
+				data.add("");
 				data.add("");
 				data.add("");
 				data.add("");

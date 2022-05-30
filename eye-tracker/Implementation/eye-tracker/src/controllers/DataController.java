@@ -44,10 +44,10 @@ public class DataController {
 	
 	public static final List<Color> colorList = new LinkedList<Color>() {
 		{
+			add(Color.ORANGE);
 			add(Color.RED);
 			add(Color.GREEN);
 			add(Color.BLUE);
-			add(Color.ORANGE);
 			add(Color.PINK);
 			add(Color.YELLOW);
 			add(Color.LIGHT_GRAY);
@@ -112,7 +112,7 @@ public class DataController {
 		long endTime = System.nanoTime();
 
 		// System.out.println( (endTime - startTime) / 1000000);
-		System.out.println("Added: timeStamp: " + gaze.timeStamp + " timeStampString: " + gaze.timeStampString
+		System.out.println("EYETRACKING: timeStamp: " + gaze.timeStamp + " timeStampString: " + gaze.timeStampString
 				+ "  x = " + gaze.smoothedCoordinates.x + " y = " + gaze.smoothedCoordinates.y);
 	}
 
@@ -260,11 +260,13 @@ public class DataController {
 	private void saveData(GazeData gazeData) {
 		boolean isLooking = isLooking(gazeData);
 		List<AreaOfInterest> mathAIOs = getListAOI(gazeData);
+		int calculateX = (int)calcualteX(gazeData.smoothedCoordinates.x);
+		int calculateY = (int)calcualteY(gazeData.smoothedCoordinates.y);
 
 		if (isLooking) {
 			addGazeToHistory(gazeData);
 
-			TriangulationManager.GetInscance().AddTriangulation(new Date(gazeData.timeStamp), gazeData, null, mathAIOs);
+			TriangulationManager.GetInscance().AddTriangulation(new Date(gazeData.timeStamp), gazeData, null, mathAIOs, calculateX, calculateY);
 		} else {
 			gazeHistory.clear();
 			fixationStart = 0;
@@ -276,9 +278,9 @@ public class DataController {
 			outputFileWriter.append(';');
 			outputFileWriter.append(Double.toString(gazeData.smoothedCoordinates.y));
 			outputFileWriter.append(';');
-			outputFileWriter.append(Integer.toString((int)calcualteX(gazeData.smoothedCoordinates.x)));
+			outputFileWriter.append(Integer.toString(calculateX));
 			outputFileWriter.append(';');
-			outputFileWriter.append(Integer.toString((int)calcualteY(gazeData.smoothedCoordinates.y)));
+			outputFileWriter.append(Integer.toString(calculateY));
 			outputFileWriter.append(';');
 			outputFileWriter.append(Integer.toString(MouseInfo.getPointerInfo().getLocation().x));
 			outputFileWriter.append(';');

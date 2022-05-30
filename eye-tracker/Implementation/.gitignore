@@ -1,1 +1,4 @@
 /.metadata/
+/eye-tracker/*.ini
+*.ini
+.ini
