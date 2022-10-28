@@ -230,7 +230,7 @@ public class ScreenCaptureController {
 				imageEditor.addCurrentEyePosition(screenshot);
 				
 				try {
-					String path = getCurrentTime()+".png";
+					String path = getCurrentTimeFormat3()+".png";
 					if(!gazeController.getGazeHistory().isEmpty())
 					{
 						path = Constants.DATE_FORMATE3.format(gazeController.getGazeHistory().get(gazeController.getGazeHistory().size()-1).timeStamp)+".png";
@@ -266,6 +266,12 @@ public class ScreenCaptureController {
 		Date date = new Date();
 		return Constants.DATE_FORMATE2.format(date);
 	}
+	
+	private String getCurrentTimeFormat3() {
+		Date date = new Date();
+		return Constants.DATE_FORMATE3.format(date);
+	}
+
 
 	public boolean isCapturing() {
 		return recording;

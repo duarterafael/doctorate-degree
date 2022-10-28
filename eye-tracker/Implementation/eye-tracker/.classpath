@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="E:/Google Drive/Doutorado/Ecomp/dev/doctorate-degree/eye-tracker/Implementation/eye-tracker/libraries/slf4j-nop-1.7.12.jar"/>
 	<classpathentry kind="lib" path="E:/Google Drive/Doutorado/Ecomp/dev/doctorate-degree/eye-tracker/Implementation/eye-tracker/libraries/xuggle-xuggler-5.4.jar"/>
 	<classpathentry kind="lib" path="libraries/commons-lang3-3.12.0.jar"/>
+	<classpathentry kind="lib" path="E:/Google Drive/Doutorado/Ecomp/dev/doctorate-degree/eye-tracker/Implementation/eye-tracker/libraries/mysql-connector-java-8.0.30.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

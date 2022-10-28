@@ -105,7 +105,9 @@ public class ExperimentScreen {
 		JTextField textParticipantId = new JTextField(21);
 		textParticipantId.setFont(font1);
 
-		String[] modelTypes = { DEFUALT_MODEL_TYPE, ModelType.WITH_GUIDELINES_AND_COLORFUL.getdescription(),
+		String[] modelTypes = { 
+				DEFUALT_MODEL_TYPE, 
+				ModelType.WITH_GUIDELINES_AND_COLORFUL.getdescription(),
 				ModelType.WITH_GUIDELINES_AND_BLACK_AND_WHITE.getdescription(),
 				ModelType.NO_GUIDELINES_AND_COLORFUL.getdescription(),
 				ModelType.NO_GUIDELINES_AND_BLACK_AND_WHITE.getdescription() };
@@ -313,8 +315,7 @@ public class ExperimentScreen {
 	}
 
 	private void setCurrentOutputDir() {
-		String subDir = questionsIndex + "_" + ScreenCaptureManager.getCurrentTime();
-		currentSubDir = new File(rootFile.getAbsolutePath() + "\\" + subDir);
+		currentSubDir = new File(rootFile.getAbsolutePath() + "\\" + questionsIndex);
 		currentSubDir.mkdirs();
 		screenCaptureManager.workingDirectory = currentSubDir.getAbsolutePath();
 	}
@@ -368,7 +369,11 @@ public class ExperimentScreen {
 		}
 
 		headers.add("Output data");
-		data.add(rootFile.getAbsolutePath());
+		try {
+			data.add(rootFile.getCanonicalPath());
+		} catch (IOException e) {
+			data.add(rootFile.getAbsolutePath());
+		}
 
 		List<List<String>> dataList = Arrays.asList(data);
 		String csvPath = rootFile.getParentFile().getParentFile().getAbsolutePath();

@@ -24,6 +24,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.sql.Savepoint;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -459,7 +460,7 @@ public class TransparentFrame extends JFrame {
 				dataList.add(data);
 			}
 			String csvPath = (new File("E:\\Google Drive\\Doutorado\\Ecomp\\dev\\doctorate-degree\\eye-tracker\\Implementation\\eye-tracker")).getAbsolutePath();
-			ExprerimentCSVWritter exprerimentCSVWritter = new ExprerimentCSVWritter(headers, dataList, csvPath, "MappingAIO.csv");
+			ExprerimentCSVWritter exprerimentCSVWritter = new ExprerimentCSVWritter(headers, dataList, csvPath, "MappingAIO"+(Calendar.getInstance().getTimeInMillis())+".csv");
 			exprerimentCSVWritter.WriteData();
 					
 		}

@@ -1,6 +1,7 @@
 package Business;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +27,18 @@ public class Constants {
 	     // seconds, minutes, hours, years,
 	     // and days
 //	     return difference_In_Time / 1000;
+	}
+	
+	public static Calendar string2Calendar(String strDate) throws ParseException
+	{
+		Date date =(Date)Constants.DATE_FORMATE.parse(strDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal;
+	}
+	
+	public static boolean isDateInBetweenIncludingEndPoints(final Date min, final Date max, final Date date){
+	    return !(date.before(min) || date.after(max));
 	}
 	
 	public static String getTimeStamp(Date date)

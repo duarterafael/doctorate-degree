@@ -31,7 +31,17 @@ https://sites.google.com/view/fredm/home#h.69q83qkyjwqn
 https://github.com/junjunjd/rustymind/tree/main/docs
 
 -Códigos abertos
-https://github.com/borg/ThinkGear-Java-socket
+https://github.com/borg/ThinkGear-Java-socket -> User esse aqui
 https://github.com/WOLFI3654/ThinkGearConnector
 https://github.com/oliexe/MindSetUWP
+
+http://developer.neurosky.com/docs/doku.php?id=thinkgear_communications_protocol#asic_eeg_power_int
+Trecho que fala que o valor mais atual é do tipo int
+EEG_POWER e ASIC_EEG_POWER_INT
+
+http://support.neurosky.com/kb/development-2/eeg-band-power-values-units-amplitudes-and-meaning
+link que fala que não da para converter para HZ =/
+
+http://developer.neurosky.com/docs/doku.php?id=thinkgear_communications_protocol
+fala do protocolo de comunicação
 

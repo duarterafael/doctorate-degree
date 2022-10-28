@@ -164,7 +164,7 @@ public class ScreenCaptureManager {
 				imageEditor.addCurrentEyePosition(screenshot);
 				
 				try {
-					String path = getCurrentTime()+".png";
+					String path = getCurrentTimeFormat3()+".png";
 					if(!gazeController.getGazeHistory().isEmpty())
 					{
 						path = Constants.DATE_FORMATE3.format(gazeController.getGazeHistory().get(gazeController.getGazeHistory().size()-1).timeStamp)+".png";
@@ -189,11 +189,15 @@ public class ScreenCaptureManager {
 	
 	public static String getCurrentTime() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy MM dd HH'h'mm'm'ss's'");
-		//DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss:sss");
 		
 		Date date = new Date();
 
 		return dateFormat.format(date);
+	}
+	
+	private String getCurrentTimeFormat3() {
+		Date date = new Date();
+		return Constants.DATE_FORMATE3.format(date);
 	}
 
 	public boolean isCapturing() {

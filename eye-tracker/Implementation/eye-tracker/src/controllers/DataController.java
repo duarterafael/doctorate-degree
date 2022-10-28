@@ -292,6 +292,8 @@ public class DataController {
 			outputFileWriter.append(';');
 			outputFileWriter.append("" + gazeData.leftEye.pupilSize);
 			outputFileWriter.append(';');
+			outputFileWriter.append("" + gazeData.rightEye.pupilSize);
+			outputFileWriter.append(';');
 			saveKeyLoggerData();
 			String stringMathAIOs = "";
 			for (AreaOfInterest item : mathAIOs) {
